@@ -1,0 +1,3 @@
+mysql-connector-python # Conectar ao MySQL
+pandas # Manipular dados e gerar relatórios em CSV
+matplotlib # Criar gráficos e visualizações
