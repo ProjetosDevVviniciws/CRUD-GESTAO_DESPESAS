@@ -6,7 +6,7 @@ def inserir_despesa(usuario_id, nome, valor, data, descricao):
     """Insere uma nova despesa no Banco de Dados"""
     try: # Alguma operação que pode gerar erro
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
-            cursor = conn.cursor()
+            cursor = conn.cursor(dictionary=True)
             
             # Verifica se a categoria existe e obtém o ID
             cursor.execute("SELECT categoria_id FROM categorias WHERE nome = %s", (nome,))
@@ -58,7 +58,7 @@ def atualizar_despesa(despesa_id, categoria_id, valor, data, descricao):
     """Atualiza uma despesa existente"""
     try: # Alguma operação que pode gerar erro
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
-            cursor = conn.cursor()
+            cursor = conn.cursor(dictionary=True)
             
             # Verifica se a despesa existe
             cursor.execute("SELECT despesa_id FROM despesas WHERE despesa_id = %s", (despesa_id,))
@@ -87,7 +87,7 @@ def deletar_despesa(despesa_id):
     """Deleta uma despesa existente"""
     try: # Alguma operação que pode gerar erro
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
-            cursor = conn.cursor()
+            cursor = conn.cursor(dictionary=True)
             
             # Verifica se a despesa existe antes de tentar delatar
             cursor.execute("SELECT despesa_id FROM despesas WHERE despesa_id = %s", (despesa_id,)) # Adicionada a vírgula para garantir que seja uma tupla

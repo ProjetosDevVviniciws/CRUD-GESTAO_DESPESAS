@@ -6,7 +6,7 @@ def inserir_categoria(nome):
     """Insere uma nova categoria no Banco de Dados (evita duplicatas)"""
     try: # Alguma operação que pode gerar erro
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
-            cursor = conn.cursor()
+            cursor = conn.cursor(dictionary=True)
             
             # Verifica se a categoria já existe:
             cursor.execute("SELECT categoria_id FROM categorias WHERE nome = %s", (nome,)) # Adicionada a vírgula para garantir que seja uma tupla
