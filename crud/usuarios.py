@@ -25,19 +25,6 @@ def inserir_usuario(nome, email, cpf):
         print(f"Erro ao inserir usuário: {e}")
         return False
     
-    
-def listar_usuarios():
-    """Lista todos os usuários existentes"""
-    try: # Alguma operação que pode gerar erro
-        with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
-            cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT * FROM usuarios")
-            return cursor.fetchall()
-            
-    except Exception as e: # O erro é capturado pelo except, e a variável 'e' armazena a exceção
-        print(f"Erro ao listar usuários: {e}")
-        return []
-    
 def atualizar_usuario(usuario_id, nome, email, cpf):
     """Atualiza um usuário existente"""
     try: # Alguma operação que pode gerar erro
