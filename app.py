@@ -26,7 +26,8 @@ def menu_principal():
             case "2":
                 menu_categorias()
             case "3":
-                menu_despesas()
+                usuario_id = input("Digite o ID do usuário: ")
+                menu_despesas(usuario_id)
             case "4":
                 menu_exportar_para_csv()
             case "5":
@@ -53,7 +54,7 @@ def menu_usuarios():
             case "1":
                 inserir_usuario()
             case "2":
-                atualizar_categoria()
+                atualizar_usuario()
             case "3":
                 deletar_usuario()
             case "0":
@@ -90,7 +91,7 @@ def menu_categorias():
         
 # ========================= MENU DESPESAS =========================
 
-def menu_despesas():
+def menu_despesas(usuario_id):
     while True:
         print("\n=== Menu Despesas ===")
         print("1 - Inserir Despesa")
@@ -105,7 +106,7 @@ def menu_despesas():
             case "1":
                 inserir_despesa()
             case "2":
-                listar_despesas()
+                listar_despesas(usuario_id)
             case "3":
                 atualizar_despesa()
             case "4":
@@ -150,3 +151,6 @@ def menu_gerar_relatorio_gastos():
                 break
             case _:
                 print("Opção inválida. Tente novamente.")
+
+if __name__ == "__main__":
+    menu_principal()
