@@ -67,7 +67,7 @@ def atualizar_despesa(despesa_id, categoria_id, valor, data, descricao):
                 return False
             
             # Verifica se a categoria existe
-            cursor.execute("SELECT categoria_id FROM categorias WHERE categoria_id  =%s", (categoria_id,))
+            cursor.execute("SELECT categoria_id FROM categorias WHERE categoria_id  = %s", (categoria_id,))
             if not cursor.fetchone():
                 print(f"Categoria não encontrada!")
                 return False

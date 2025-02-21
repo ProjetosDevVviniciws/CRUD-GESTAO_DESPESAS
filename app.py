@@ -5,6 +5,7 @@ from crud.categorias import inserir_categoria, listar_categorias, atualizar_cate
 from crud.despesas import inserir_despesa, listar_despesas, atualizar_despesa, deletar_despesa
 from reports.reports_pandas import exportar_para_csv
 from reports.reports_matplotlib import gerar_relatorio_gastos
+from datetime import datetime
 
 # ========================= MENU PRINCIPAL =========================
 
@@ -29,9 +30,11 @@ def menu_principal():
                 usuario_id = input("Digite o ID do usuário: ")
                 menu_despesas(usuario_id)
             case "4":
-                menu_exportar_para_csv()
+                usuario_id = input("Digite o ID do usuário: ")
+                menu_exportar_para_csv(usuario_id)
             case "5":
-                menu_gerar_relatorio_gastos()
+                usuario_id = input("Digite o ID do usuário: ")
+                menu_gerar_relatorio_gastos(usuario_id)
             case "0":
                 print("Saindo...")
                 break
@@ -104,13 +107,49 @@ def menu_despesas(usuario_id):
         
         match escolha:
             case "1":
-                inserir_despesa()
+                usuario_id = int(input("Digite o ID do usuário: "))
+                nome = input("Digite o nome da despesa: ")
+                valor = float(input("Digite o valor da despesa: "))
+                
+                data = input("Digite a data da despesa (YYYY-MM-DD): ")
+                datetime.strptime(data, "%Y-%m-%d")
+                
+                descricao = input("Digite a descição da despesa: ")
+                inserir_despesa(usuario_id, nome, valor, data, descricao)
+                
             case "2":
-                listar_despesas(usuario_id)
+                usuario_id = int(input("Digite o ID do usuário: "))
+                despesas = listar_despesas(usuario_id) # Recebe a despesa do banco
+                
+                if despesas:
+                    print("\n=== Despesas Cadastradas ===")
+                    for despesa in despesas:
+                        print(f"ID: {despesa['despesa_id']} | Categoria: {despesa['nome']} | "
+                              f"Valor: R${despesa['valor']:.2f} | Data{despesa['data']} | "
+                              f"Descrição: {despesa['descricao']}")
+                else:
+                    print("Nenhuma despesa encontrada para este usuário.")
+                    
             case "3":
-                atualizar_despesa()
+                try:
+                    despesa_id = int(input("Digite o ID da despesa: "))
+                    categoria_id = int(input("Digite o ID da categoria: "))
+                    valor = float(input("Digite o novo valor da despesa: "))
+                    
+                    data = input("Digite a data nova da despesa (YYYY-MM-DD): ")
+                    datetime.strptime(data, "%Y-%m-%d") # Valida o formato da data
+                    
+                    descricao = input("Digite a nova descrição da despesa: ")
+                    
+                    atualizar_despesa(despesa_id, categoria_id, valor, data, descricao)
+                
+                except ValueError as e:
+                    print(f"Erro: {e}. Certifique-se de inserir números válidos e data no formato correto.")
+                
             case "4":
-                deletar_despesa()
+                despesa_id = input("Digite o ID da despesa: ")
+                deletar_despesa(despesa_id)
+                
             case "0":
                 break
             case _:
