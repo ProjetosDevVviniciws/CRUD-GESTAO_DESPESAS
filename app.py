@@ -48,20 +48,32 @@ def menu_usuarios():
         print("\n=== Menu Usuários ===")
         print("1 - Inserir Usuário")
         print("2 - Atualizar Usuário")
-        print("3 - Deletar Usuários")
+        print("3 - Deletar Usuário")
         print("0 - Voltar")
         
         escolha = input("Escolha uma opção: ")
         
         match escolha:
             case "1":
-                inserir_usuario()
+                nome = str(input("Digite o nome do usuário: "))
+                email = input("Digite o email do usuário: ")
+                cpf = input("Digite o CPF do usuário: ")
+                inserir_usuario(nome, email, cpf)
+                
             case "2":
-                atualizar_usuario()
+                usuario_id = int(input("Digite o ID do usuário: "))
+                nome = input("Digite o nome do usuário: ")
+                email = input("Digite o e-mail do usuário: ")
+                cpf = int(input("Digite o CPF do usuário: "))
+                atualizar_usuario(usuario_id, nome, email, cpf)
+                
             case "3":
-                deletar_usuario()
+                usuario_id = int(input("Digite o ID do usuário: "))
+                deletar_usuario(usuario_id)
+                
             case "0":
                 break
+            
             case _:
                 print("Opção inválida. Tente novamente.")
 
@@ -80,15 +92,22 @@ def menu_categorias():
         
         match escolha:
             case "1":
-                inserir_categoria()
+                nome = input("Digite o nome da categoria: ")
+                inserir_categoria(nome)
+                
             case "2":
                 listar_categorias()
+                
             case "3":
                 atualizar_categoria()
+                
             case "4":
                 deletar_categoria()
+                
             case "0":
+                
                 break
+            
             case _:
                 print("Opção inválida. Tente novamente.")
         
@@ -124,8 +143,8 @@ def menu_despesas(usuario_id):
                 if despesas:
                     print("\n=== Despesas Cadastradas ===")
                     for despesa in despesas:
-                        print(f"ID: {despesa['despesa_id']} | Categoria: {despesa['nome']} | "
-                              f"Valor: R${despesa['valor']:.2f} | Data{despesa['data']} | "
+                        print(f"ID: {despesa['despesa_id']} | Categoria: {despesa['categoria_nome']} | "
+                              f"Valor: R${despesa['valor']:.2f} | Data: {despesa['data']} | "
                               f"Descrição: {despesa['descricao']}")
                 else:
                     print("Nenhuma despesa encontrada para este usuário.")
@@ -151,7 +170,9 @@ def menu_despesas(usuario_id):
                 deletar_despesa(despesa_id)
                 
             case "0":
+                
                 break
+            
             case _:
                 print("Opção inválida. Tente novamente.")
 

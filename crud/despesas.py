@@ -9,12 +9,12 @@ def inserir_despesa(usuario_id, nome, valor, data, descricao):
             cursor = conn.cursor(dictionary=True)
             
             # Verifica se a categoria existe e obtém o ID
-            cursor.execute("SELECT categoria_id FROM categorias WHERE nome = %s", (nome,))
+            cursor.execute("SELECT categoria_id FROM categorias WHERE nome = %s AND usuario_id = %s", (nome, usuario_id))
             categoria = cursor.fetchone()
               
             if not categoria:
                 # Se a categoria não existir, cria automaticamente
-                cursor.execute("INSERT INTO categorias (nome) VALUES (%s)", (nome, ))
+                cursor.execute("INSERT INTO categorias (usuario_id, nome) VALUES (%s, %s)", (usuario_id, nome))
                 conn.commit()
                 categoria_id = cursor.lastrowid # Obtém o ID da categoria recém-criada
             else:
