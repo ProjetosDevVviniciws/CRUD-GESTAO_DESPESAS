@@ -23,9 +23,10 @@ def menu_principal():
         
         match escolha:
             case "1":
-                menu_usuarios()
+                menu_usuarios() # Não é necessário passar um parâmetro, pois pode não haver um usuário selecionado para fornecer um usuario_id
             case "2":
-                menu_categorias()
+                usuario_id = input("Digite o ID do usuário: ")
+                menu_categorias(usuario_id)
             case "3":
                 usuario_id = input("Digite o ID do usuário: ")
                 menu_despesas(usuario_id)
@@ -43,7 +44,7 @@ def menu_principal():
 
 # ========================= MENU USUÁRIOS =========================
 
-def menu_usuarios():
+def menu_usuarios(): # Não é necessário passar um parâmetro, pois pode não haver um usuário selecionado para fornecer um usuario_id
     while True:
         print("\n=== Menu Usuários ===")
         print("1 - Inserir Usuário")
@@ -62,9 +63,9 @@ def menu_usuarios():
                 
             case "2":
                 usuario_id = int(input("Digite o ID do usuário: "))
-                nome = input("Digite o nome do usuário: ")
-                email = input("Digite o e-mail do usuário: ")
-                cpf = int(input("Digite o CPF do usuário: "))
+                nome = input("Digite o novo nome do usuário: ")
+                email = input("Digite o novo e-mail do usuário: ")
+                cpf = int(input("Digite o novo CPF do usuário: "))
                 atualizar_usuario(usuario_id, nome, email, cpf)
                 
             case "3":
@@ -79,7 +80,7 @@ def menu_usuarios():
 
 # ========================= MENU CATEGORIAS =========================
 
-def menu_categorias():
+def menu_categorias(usuario_id):
     while True:
         print("\n=== Menu Categorias ===")
         print("1 - Inserir Categoria")
@@ -93,16 +94,25 @@ def menu_categorias():
         match escolha:
             case "1":
                 nome = input("Digite o nome da categoria: ")
-                inserir_categoria(nome)
+                inserir_categoria(nome, usuario_id)
                 
             case "2":
-                listar_categorias()
-                
+                categorias = listar_categorias(usuario_id)
+                if categorias:
+                    print("\n=== Categorias do Usuário ===")
+                    for cat in categorias:
+                        print(f"ID: {cat['categoria_id']} | Nome: {cat['nome']}")
+                else:
+                        print("Nenhuma categoria encontrada ")
+            
             case "3":
-                atualizar_categoria()
+                categoria_id = int(input("Digite o ID da categoria: "))
+                nome = input("Digite o novo nome da categoria: ")
+                atualizar_categoria(usuario_id, categoria_id, nome)
                 
             case "4":
-                deletar_categoria()
+                categoria_id = int(input("Digite o ID da categoria: "))
+                deletar_categoria(categoria_id)
                 
             case "0":
                 
@@ -126,7 +136,6 @@ def menu_despesas(usuario_id):
         
         match escolha:
             case "1":
-                usuario_id = int(input("Digite o ID do usuário: "))
                 nome = input("Digite o nome da despesa: ")
                 valor = float(input("Digite o valor da despesa: "))
                 
@@ -137,7 +146,6 @@ def menu_despesas(usuario_id):
                 inserir_despesa(usuario_id, nome, valor, data, descricao)
                 
             case "2":
-                usuario_id = int(input("Digite o ID do usuário: "))
                 despesas = listar_despesas(usuario_id) # Recebe a despesa do banco
                 
                 if despesas:
@@ -166,7 +174,7 @@ def menu_despesas(usuario_id):
                     print(f"Erro: {e}. Certifique-se de inserir números válidos e data no formato correto.")
                 
             case "4":
-                despesa_id = input("Digite o ID da despesa: ")
+                despesa_id = int(input("Digite o ID da despesa: "))
                 deletar_despesa(despesa_id)
                 
             case "0":
