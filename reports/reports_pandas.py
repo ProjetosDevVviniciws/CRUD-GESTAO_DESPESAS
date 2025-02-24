@@ -18,10 +18,23 @@ def exportar_para_csv(usuario_id):
                 print("Nenhuma despesa encontrada para exportar.")
                 return
             
+            # Renomeia colunas para melhor visualização no Excel
+            df.rename(columns={
+                'despesa_id': 'ID Despesa',
+                'usuario_id': 'ID Usuário',
+                'categoria_id': 'ID Categoria',
+                'valor': 'Valor',
+                'data': 'Data',
+                'descricao': 'Descrição'
+            }, inplace=True)
+            
+            # Ordena por data
+            df.sort_values(by='Data', inplace=True)
+            
             data_atual = datetime.now().strftime("%Y-%m-%d") # Obtém a data atual no formato YYYY-MM-DD
             nome_arquivo = f"relatorio_despesas_usuario_{usuario_id}_{data_atual}.csv" # Gera o nome do arquivo CSV
             
-            df.to_csv(nome_arquivo, index=False, encoding="utf-8-sig") # Salva os dados no arquivo CSV
+            df.to_csv(nome_arquivo, sep=';', index=False, encoding="utf-8-sig", decimal=',') # Salva os dados no arquivo CSV
             print(f"Relatório exportado com sucesso para {nome_arquivo}")
              
     except Exception:

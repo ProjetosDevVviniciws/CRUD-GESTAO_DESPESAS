@@ -112,7 +112,7 @@ def menu_categorias(usuario_id):
                 
             case "4":
                 categoria_id = int(input("Digite o ID da categoria: "))
-                deletar_categoria(categoria_id)
+                deletar_categoria(usuario_id, categoria_id)
                 
             case "0":
                 
@@ -186,7 +186,7 @@ def menu_despesas(usuario_id):
 
 # ========================= MENU EXPORTAR CSV =========================
 
-def menu_exportar_para_csv():
+def menu_exportar_para_csv(usuario_id):
     while True:
         print("\n=== Menu Exportar para CSV ===")
         print("1 - Exportar para CSV")
@@ -196,7 +196,8 @@ def menu_exportar_para_csv():
         
         match escolha:
             case "1":
-                exportar_para_csv()
+                usuario_id = int(input("Digite o ID do usuário: "))
+                exportar_para_csv(usuario_id)
             case "0":
                 break
             case _:

@@ -18,7 +18,7 @@ def inserir_despesa(usuario_id, nome, valor, data, descricao):
                 conn.commit()
                 categoria_id = cursor.lastrowid # Obtém o ID da categoria recém-criada
             else:
-                categoria_id = categoria[0] # Obtém o ID da categoria existente
+                categoria_id = categoria['categoria_id'] # Obtém o ID da categoria existente
             
             # Insere a despesa
             sql = "INSERT INTO despesas (usuario_id, categoria_id, valor, data, descricao) VALUES (%s, %s, %s, %s, %s)"

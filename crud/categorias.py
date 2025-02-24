@@ -2,9 +2,10 @@
 
 from database.db_config import get_db_connection # Importa a função para obter a conexão com o banco de dados
 
-def inserir_categoria(usuario_id, nome):
+def inserir_categoria(nome, usuario_id):
     """Insere uma nova categoria vinculada a um usuário no Banco de Dados (evita duplicatas)"""
     try: # Alguma operação que pode gerar erro
+        
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
             cursor = conn.cursor(dictionary=True)
             
