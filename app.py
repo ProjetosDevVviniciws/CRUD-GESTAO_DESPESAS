@@ -205,7 +205,7 @@ def menu_exportar_para_csv(usuario_id):
                 
 # ========================= MENU GERAR RELATÓRIO DE GASTOS =========================
 
-def menu_gerar_relatorio_gastos():
+def menu_gerar_relatorio_gastos(usuario_id):
     while True:
         print("\n=== Menu Gerar Relatório de Gastos ===")
         print("1 - Gerar Relatório de Gastos")
@@ -215,7 +215,8 @@ def menu_gerar_relatorio_gastos():
         
         match escolha:
             case "1":
-                gerar_relatorio_gastos()
+                usuario_id = int(input("Digite o ID do usuário: "))
+                gerar_relatorio_gastos(usuario_id)
             case "0":
                 break
             case _:

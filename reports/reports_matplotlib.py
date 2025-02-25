@@ -10,7 +10,12 @@ def carregar_dados(usuario_id):
     banco de dados para um DataFrame do Pandas
     """
     with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
-        query = "SELECT categoria, valor FROM despesas WHERE usuario_id = %s"
+        query = """
+        SELECT c.nome AS categoria, d.valor
+        FROM despesas d
+        JOIN categorias c ON d.categoria_id = c.categoria_id 
+        WHERE d.usuario_id = %s
+        """
         df = pd.read_sql_query(query, conn, params=[usuario_id]) # Filtra pelo usuário
         return df
     
