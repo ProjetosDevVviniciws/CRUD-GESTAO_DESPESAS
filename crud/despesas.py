@@ -2,7 +2,7 @@
 
 from database.db_config import get_db_connection # Importa a função para obter a conexão com o banco de dados
 
-def inserir_despesa(usuario_id, nome, valor, data, descricao):
+def inserir_despesa(usuario_id, nome, valor, data, descricao, fixa):
     """Insere uma nova despesa no Banco de Dados"""
     try: # Alguma operação que pode gerar erro
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
@@ -20,6 +20,19 @@ def inserir_despesa(usuario_id, nome, valor, data, descricao):
             else:
                 categoria_id = categoria['categoria_id'] # Obtém o ID da categoria existente
             
+            # Verifica se a despesa for fixa, verifica se já existe no mesmo mês
+            if fixa:
+                cursor.execute("""
+                    SELECT * FROM despesas
+                    WHERE usuario_id = %s
+                    AND categoria_id = %s
+                    AND DATE_FORMAT(data, '%Y-%m') = DATE_FORMAT(%s, '%Y-%m')
+                """, (usuario_id, categoria_id, data))
+            
+            if cursor.fetchone():
+                print("Despesa já cadastrada para este mês!")
+                return False
+             
             # Insere a despesa
             sql = "INSERT INTO despesas (usuario_id, categoria_id, valor, data, descricao) VALUES (%s, %s, %s, %s, %s)"
             cursor.execute(sql, (usuario_id, categoria_id, valor, data, descricao))
