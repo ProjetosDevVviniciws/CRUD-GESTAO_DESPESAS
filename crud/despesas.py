@@ -34,8 +34,8 @@ def inserir_despesa(usuario_id, nome, valor, data, descricao, fixa):
                 return False
              
             # Insere a despesa
-            sql = "INSERT INTO despesas (usuario_id, categoria_id, valor, data, descricao) VALUES (%s, %s, %s, %s, %s)"
-            cursor.execute(sql, (usuario_id, categoria_id, valor, data, descricao))
+            sql = "INSERT INTO despesas (usuario_id, categoria_id, valor, data, descricao, fixa) VALUES (%s, %s, %s, %s, %s, %s)"
+            cursor.execute(sql, (usuario_id, categoria_id, valor, data, descricao, fixa))
             conn.commit()
             print("Despesa inserida com sucesso!")
             return True
@@ -67,7 +67,7 @@ def listar_despesas(usuario_id):
         print(f"Erro ao listar despesas: {e}")
         return []
 
-def atualizar_despesa(despesa_id, categoria_id, valor, data, descricao):
+def atualizar_despesa(despesa_id, categoria_id, valor, data, descricao, fixa):
     """Atualiza uma despesa existente"""
     try: # Alguma operação que pode gerar erro
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
@@ -86,8 +86,8 @@ def atualizar_despesa(despesa_id, categoria_id, valor, data, descricao):
                 return False
             
             # Atualiza a despesa
-            sql = "UPDATE despesas SET categoria_id = %s, valor = %s, data = %s, descricao = %s WHERE despesa_id = %s"
-            cursor.execute(sql, (categoria_id, valor, data, descricao, despesa_id))
+            sql = "UPDATE despesas SET categoria_id = %s, valor = %s, data = %s, descricao = %s, fixa = %s WHERE despesa_id = %s"
+            cursor.execute(sql, (categoria_id, valor, data, descricao, fixa, despesa_id))
             conn.commit()
             print("Despesa atualizada com sucesso!")
             return True

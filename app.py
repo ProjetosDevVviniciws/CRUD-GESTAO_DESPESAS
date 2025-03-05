@@ -94,21 +94,24 @@ def menu_categorias(usuario_id):
         match escolha:
             case "1":
                 nome = input("Digite o nome da categoria: ")
-                inserir_categoria(nome, usuario_id)
+                fixa = input("A categoria é fixa? (S/N): ").strip().lower() == "s"
+                inserir_categoria(nome, usuario_id, fixa)
                 
             case "2":
                 categorias = listar_categorias(usuario_id)
                 if categorias:
                     print("\n=== Categorias do Usuário ===")
                     for cat in categorias:
-                        print(f"ID: {cat['categoria_id']} | Nome: {cat['nome']}")
+                        tipo = "Fixa" if cat['fixa'] else 'Variável'
+                        print(f"ID: {cat['categoria_id']} | Nome: {cat['nome']} | Tipo: {tipo}")
                 else:
                         print("Nenhuma categoria encontrada ")
             
             case "3":
                 categoria_id = int(input("Digite o ID da categoria: "))
                 nome = input("Digite o novo nome da categoria: ")
-                atualizar_categoria(usuario_id, categoria_id, nome)
+                fixa = input("A categoria é fixa? (S/N): ").strip().lower() == "s"
+                atualizar_categoria(usuario_id, categoria_id, nome, fixa)
                 
             case "4":
                 categoria_id = int(input("Digite o ID da categoria: "))
@@ -143,7 +146,10 @@ def menu_despesas(usuario_id):
                 datetime.strptime(data, "%Y-%m-%d")
                 
                 descricao = input("Digite a descição da despesa: ")
-                inserir_despesa(usuario_id, nome, valor, data, descricao)
+                
+                fixa = 1 if input("A despesa é fixa? (S/N): ").strip().lower() == "s" else 0
+                
+                inserir_despesa(usuario_id, nome, valor, data, descricao, fixa)
                 
             case "2":
                 despesas = listar_despesas(usuario_id) # Recebe a despesa do banco
@@ -151,9 +157,10 @@ def menu_despesas(usuario_id):
                 if despesas:
                     print("\n=== Despesas Cadastradas ===")
                     for despesa in despesas:
+                        status_fixa  = "Fixa" if despesa.get('fixa', 0) == 1 else "Variável"
                         print(f"ID: {despesa['despesa_id']} | Categoria: {despesa['categoria_nome']} | "
                               f"Valor: R${despesa['valor']:.2f} | Data: {despesa['data']} | "
-                              f"Descrição: {despesa['descricao']}")
+                              f"Descrição: {despesa['descricao']} | {status_fixa}")
                 else:
                     print("Nenhuma despesa encontrada para este usuário.")
                     
@@ -168,7 +175,9 @@ def menu_despesas(usuario_id):
                     
                     descricao = input("Digite a nova descrição da despesa: ")
                     
-                    atualizar_despesa(despesa_id, categoria_id, valor, data, descricao)
+                    fixa = 1 if input("A despesa será fixa? (S/N): ").strip().lower() == "s" else 0
+                    
+                    atualizar_despesa(despesa_id, categoria_id, valor, data, descricao, fixa)
                 
                 except ValueError as e:
                     print(f"Erro: {e}. Certifique-se de inserir números válidos e data no formato correto.")

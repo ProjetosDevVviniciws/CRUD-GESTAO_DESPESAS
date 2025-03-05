@@ -25,9 +25,14 @@ def exportar_para_csv(usuario_id):
                 'categoria_id': 'ID Categoria',
                 'valor': 'Valor',
                 'data': 'Data',
-                'descricao': 'Descrição'
+                'descricao': 'Descrição',
+                'fixa': 'Tipo'
             }, inplace=True)
             
+            # Converte 1 para "Fixa" e 0 para "Variável"
+            df['Tipo'] = df['fixa'].map({1: 'Fixa', 0: 'Variável'})
+            df.drop(columns=['fixa'], inplace=True) # Remove a coluna fixa original
+                        
             # Ordena por data
             df.sort_values(by='Data', inplace=True)
             
