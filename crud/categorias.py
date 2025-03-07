@@ -2,7 +2,7 @@
 
 from database.db_config import get_db_connection # Importa a função para obter a conexão com o banco de dados
 
-def inserir_categoria(nome, usuario_id, fixa=False): # Adiciona fixa como parâmetro com valor padrão False
+def inserir_categoria(nome, usuario_id):
     """Insere uma nova categoria vinculada a um usuário no Banco de Dados (evita duplicatas)"""
     try: # Alguma operação que pode gerar erro
         
@@ -14,16 +14,17 @@ def inserir_categoria(nome, usuario_id, fixa=False): # Adiciona fixa como parâm
             categoria = cursor.fetchone()
             
             if categoria:
-                categoria_id = categoria['categoria_id'] # Obtém o ID da nova categoria
+                print(f"A categoria '{nome}' já existe para este usuário.")
+                return categoria['categoria_id'] # Obtém o ID da nova categoria
             else:
                 
                 # Se não existir, cria a categoria
-                cursor.execute("INSERT INTO categorias (nome, usuario_id, fixa) VALUES (%s, %s, %s)", (nome, usuario_id, fixa))
+                cursor.execute("INSERT INTO categorias (nome, usuario_id) VALUES (%s, %s)", (nome, usuario_id))
                 conn.commit()
                 categoria_id = cursor.lastrowid # Obtém o ID da nova categoria
                 
-            print("Categoria inserida com sucesso!")
-            return categoria_id
+                print("Categoria inserida com sucesso!")
+                return categoria_id
         
     except Exception as e:  # O erro é capturado pelo except, e a variável 'e' armazena a exceção
         print(f"Erro ao inserir categoria: {e}")
@@ -34,14 +35,14 @@ def listar_categorias(usuario_id):
     try: # Alguma operação que pode gerar erro
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
             cursor = conn.cursor(dictionary=True)
-            cursor.execute("SELECT categoria_id, nome, fixa FROM categorias WHERE usuario_id = %s", (usuario_id,)) # Adicionada a vírgula para garantir que seja uma tupla
+            cursor.execute("SELECT categoria_id, nome FROM categorias WHERE usuario_id = %s", (usuario_id,)) # Adicionada a vírgula para garantir que seja uma tupla
             return cursor.fetchall()
         
     except Exception as e: # O erro é capturado pelo except, e a variável 'e' armazena a exceção
         print(f"Erro ao listar categorias: {e}")
         return []
 
-def atualizar_categoria(usuario_id, categoria_id, nome, fixa):
+def atualizar_categoria(usuario_id, categoria_id, nome):
     """Atualiza uma categoria existente de um usuário específico"""
     try: # Alguma operação que pode gerar erro
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
@@ -54,8 +55,8 @@ def atualizar_categoria(usuario_id, categoria_id, nome, fixa):
                 return False
             
             # Atualiza a categoria
-            sql = "UPDATE categorias SET nome = %s, fixa = %s WHERE categoria_id = %s AND usuario_id = %s"
-            cursor.execute(sql, (nome, fixa, categoria_id, usuario_id))
+            sql = "UPDATE categorias SET nome = %s WHERE categoria_id = %s AND usuario_id = %s"
+            cursor.execute(sql, (nome, categoria_id, usuario_id))
             conn.commit()
             print("Categoria atualizada com sucesso!")
             return True

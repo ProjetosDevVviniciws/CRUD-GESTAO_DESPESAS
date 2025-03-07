@@ -94,24 +94,21 @@ def menu_categorias(usuario_id):
         match escolha:
             case "1":
                 nome = input("Digite o nome da categoria: ")
-                fixa = input("A categoria é fixa? (S/N): ").strip().lower() == "s"
-                inserir_categoria(nome, usuario_id, fixa)
+                inserir_categoria(nome, usuario_id)
                 
             case "2":
                 categorias = listar_categorias(usuario_id)
                 if categorias:
                     print("\n=== Categorias do Usuário ===")
                     for cat in categorias:
-                        tipo = "Fixa" if cat['fixa'] else 'Variável'
-                        print(f"ID: {cat['categoria_id']} | Nome: {cat['nome']} | Tipo: {tipo}")
+                        print(f"ID: {cat['categoria_id']} | Nome: {cat['nome']}")
                 else:
                         print("Nenhuma categoria encontrada ")
             
             case "3":
                 categoria_id = int(input("Digite o ID da categoria: "))
                 nome = input("Digite o novo nome da categoria: ")
-                fixa = input("A categoria é fixa? (S/N): ").strip().lower() == "s"
-                atualizar_categoria(usuario_id, categoria_id, nome, fixa)
+                atualizar_categoria(usuario_id, categoria_id, nome)
                 
             case "4":
                 categoria_id = int(input("Digite o ID da categoria: "))
@@ -145,7 +142,7 @@ def menu_despesas(usuario_id):
                 data = input("Digite a data da despesa (YYYY-MM-DD): ")
                 datetime.strptime(data, "%Y-%m-%d")
                 
-                descricao = input("Digite a descição da despesa: ")
+                descricao = input("Digite a descrição da despesa: ")
                 
                 fixa = 1 if input("A despesa é fixa? (S/N): ").strip().lower() == "s" else 0
                 
@@ -157,7 +154,7 @@ def menu_despesas(usuario_id):
                 if despesas:
                     print("\n=== Despesas Cadastradas ===")
                     for despesa in despesas:
-                        status_fixa  = "Fixa" if despesa.get('fixa', 0) == 1 else "Variável"
+                        status_fixa  = "Fixa" if str(despesa.get('fixa', 0)) in ("1", "True") else "Variável"
                         print(f"ID: {despesa['despesa_id']} | Categoria: {despesa['categoria_nome']} | "
                               f"Valor: R${despesa['valor']:.2f} | Data: {despesa['data']} | "
                               f"Descrição: {despesa['descricao']} | {status_fixa}")

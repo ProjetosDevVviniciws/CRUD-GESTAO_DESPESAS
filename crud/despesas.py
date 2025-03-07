@@ -20,7 +20,10 @@ def inserir_despesa(usuario_id, nome, valor, data, descricao, fixa):
             else:
                 categoria_id = categoria['categoria_id'] # Obtém o ID da categoria existente
             
-            # Verifica se a despesa for fixa, verifica se já existe no mesmo mês
+            # Debugging: Verifica os valores antes de executar a consulta de duplicação
+            print(f"Verificando duplicação para usuario_id={usuario_id}, categoria_id={categoria_id}, valor={valor}, descricao={descricao}, data={data}")
+            
+            # Verifica se a despesa for fixa e se já existe no mesmo mês
             if fixa:
                 cursor.execute("""
                     SELECT * FROM despesas
@@ -28,6 +31,15 @@ def inserir_despesa(usuario_id, nome, valor, data, descricao, fixa):
                     AND categoria_id = %s
                     AND DATE_FORMAT(data, '%Y-%m') = DATE_FORMAT(%s, '%Y-%m')
                 """, (usuario_id, categoria_id, data))
+            else:
+                cursor.execute("""
+                    SELECT * FROM despesas
+                    WHERE usuario_id = %s
+                    AND categoria_id = %s
+                    AND valor = %s
+                    AND descricao = %s
+                    AND DATE_FORMAT(data, '%Y-%m') = DATE_FORMAT(%s, '%Y-%m')
+                """, (usuario_id, categoria_id,valor, descricao, data))
             
             if cursor.fetchone():
                 print("Despesa já cadastrada para este mês!")
@@ -54,9 +66,9 @@ def listar_despesas(usuario_id):
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
             cursor = conn.cursor(dictionary=True)
             query = """
-                SELECT d.despesa_id, d.usuario_id, d.categoria_id, d.valor, d.data, d.descricao, c.nome AS categoria_nome
+                SELECT d.despesa_id, d.usuario_id, d.categoria_id, d.valor, d.data, d.descricao, d.fixa, c.nome AS categoria_nome
                 FROM despesas AS d
-                JOIN categorias AS c ON d.categoria_id = c.categoria_id
+                JOIN categorias c ON d.categoria_id = c.categoria_id
                 WHERE d.usuario_id = %s    
             """
             cursor.execute(query, (usuario_id,)) 

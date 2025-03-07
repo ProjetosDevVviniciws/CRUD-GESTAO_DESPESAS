@@ -39,7 +39,7 @@ def formatar_rotulo(pct, valor_total):
 
 def gerar_relatorio_gastos(usuario_id):
     """
-    Gera um gráfico de pizza e barras para 
+    Gera um gráfico de Pizza e Barras para 
     visualizar os gastos de um usuário específico.
     """
     df = carregar_dados(usuario_id) # Carrega os dados do usuário
