@@ -20,17 +20,16 @@ def inserir_despesa(usuario_id, nome, valor, data, descricao, fixa):
             else:
                 categoria_id = categoria['categoria_id'] # Obtém o ID da categoria existente
             
-            # Debugging: Verifica os valores antes de executar a consulta de duplicação
-            print(f"Verificando duplicação para usuario_id={usuario_id}, categoria_id={categoria_id}, valor={valor}, descricao={descricao}, data={data}")
-            
             # Verifica se a despesa for fixa e se já existe no mesmo mês
             if fixa:
                 cursor.execute("""
                     SELECT * FROM despesas
                     WHERE usuario_id = %s
                     AND categoria_id = %s
-                    AND DATE_FORMAT(data, '%Y-%m') = DATE_FORMAT(%s, '%Y-%m')
-                """, (usuario_id, categoria_id, data))
+                    AND valor = %s
+                    AND descricao = %s
+                    AND data = %s
+                """, (usuario_id, categoria_id,valor, descricao, data))
             else:
                 cursor.execute("""
                     SELECT * FROM despesas
@@ -38,7 +37,7 @@ def inserir_despesa(usuario_id, nome, valor, data, descricao, fixa):
                     AND categoria_id = %s
                     AND valor = %s
                     AND descricao = %s
-                    AND DATE_FORMAT(data, '%Y-%m') = DATE_FORMAT(%s, '%Y-%m')
+                    AND data = %s
                 """, (usuario_id, categoria_id,valor, descricao, data))
             
             if cursor.fetchone():
