@@ -27,7 +27,10 @@ def inserir_categoria(nome, usuario_id):
                 return categoria_id
         
     except Exception as e:  # O erro é capturado pelo except, e a variável 'e' armazena a exceção
-        print(f"Erro ao inserir categoria: {e}")
+        if "Duplicate entry" in str(e):
+            print(f"A categoria '{nome}' já existe para este usuário.")
+        else:
+            print(f"Erro ao inserir categoria: {e}")
         return False
 
 def listar_categorias(usuario_id): 

@@ -1,8 +1,17 @@
 # Geração de gráficos
 
+from sqlalchemy import create_engine
+from urllib.parse import quote_plus  # Importa para codificar a senha corretamente
 import pandas as pd # Importa a biblioteca pandas para manipulação de dados
 import matplotlib.pyplot as plt # Importa matplotlib.pyplot para visualização de gráficos e figuras personalizadas
 from database.db_config import get_db_connection # Importa a função para obter a conexão com o banco de dados
+
+def get_db_connection(): # Função para conexão com o banco de dados
+    password = quote_plus("@program225X")  # Codifica a senha para evitar erros com caracteres especiais
+    engine = create_engine(f"mysql+pymysql://Vinicius:{password}@localhost/gestao_despesas",
+                           pool_pre_ping=True,  # Evita erros de conexão perdida
+                           connect_args={"charset": "utf8mb4"})  # Garante suporte a caracteres especiais
+    return engine.connect()
 
 def carregar_dados(usuario_id):
     """
@@ -16,7 +25,7 @@ def carregar_dados(usuario_id):
         JOIN categorias c ON d.categoria_id = c.categoria_id 
         WHERE d.usuario_id = %s
         """
-        df = pd.read_sql_query(query, conn, params=[usuario_id]) # Filtra pelo usuário
+        df = pd.read_sql_query(query, conn, params=(usuario_id,)) # Filtra pelo usuário
         
         # Converte 1 para "Fixa" e 0 para "Variável"
         df["Tipo"] = df["fixa"].map({1: "Fixa", 0: "Variável"})
@@ -68,6 +77,11 @@ def gerar_relatorio_gastos(usuario_id):
     # Gera o gráfico de Barras - Gastos Fixos vs Variáveis
     plt.figure(figsize=(12, 5)) # Cria uma nova figura com tamanho de 12x5 polegadas
     df_tipo = df.groupby("Tipo")["valor"].sum() # Agrupa valores por tipo (Fixa vs Variável)
+    
+    # Verifica se há dados antes de gerar o gráfico
+    if df_tipo.empty:
+        print("Nenhuma despesa fixa ou variável encontrada para gerar o gráfico de Barras.")
+        return
     
     df_tipo.plot(
         kind="bar", # Tipo do gráfico: barras (bar)

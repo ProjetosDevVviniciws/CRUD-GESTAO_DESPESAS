@@ -18,6 +18,8 @@ def exportar_para_csv(usuario_id):
                 print("Nenhuma despesa encontrada para exportar.")
                 return
             
+            print("Colunas disponíveis no DataFrame: ", df.columns)
+            
             # Renomeia colunas para melhor visualização no Excel
             df.rename(columns={
                 'despesa_id': 'ID Despesa',
@@ -30,8 +32,11 @@ def exportar_para_csv(usuario_id):
             }, inplace=True)
             
             # Converte 1 para "Fixa" e 0 para "Variável"
-            df['Tipo'] = df['fixa'].map({1: 'Fixa', 0: 'Variável'})
-            df.drop(columns=['fixa'], inplace=True) # Remove a coluna fixa original
+            if 'fixa' in df.columns:
+                df['Tipo'] = df['fixa'].map({1: 'Fixa', 0: 'Variável'})
+                df.drop(columns=['fixa'], inplace=True) # Remove a coluna fixa original
+            else:
+                print("Atenção: A coluna 'fixa' não foi encontrada no banco de dados. O tipo de despesa não será incluído.")
                         
             # Ordena por data
             df.sort_values(by='Data', inplace=True)

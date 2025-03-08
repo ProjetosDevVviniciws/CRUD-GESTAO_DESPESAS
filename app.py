@@ -202,7 +202,6 @@ def menu_exportar_para_csv(usuario_id):
         
         match escolha:
             case "1":
-                usuario_id = int(input("Digite o ID do usuário: "))
                 exportar_para_csv(usuario_id)
             case "0":
                 break
@@ -221,7 +220,6 @@ def menu_gerar_relatorio_gastos(usuario_id):
         
         match escolha:
             case "1":
-                usuario_id = int(input("Digite o ID do usuário: "))
                 gerar_relatorio_gastos(usuario_id)
             case "0":
                 break
