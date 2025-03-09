@@ -1,0 +1,4 @@
+﻿ID Despesa;ID Usuário;Categoria;Valor;Data;Descrição;Tipo
+1;1;Academia;120,0;2025-02-07;Mensalidade da Academia;Fixa
+6;1;Combustível;200,0;2025-03-08;Combustível do Mês;Variável
+8;1;Plano de Sáude;1150,0;2025-03-09;Consulta com Médico;Fixa

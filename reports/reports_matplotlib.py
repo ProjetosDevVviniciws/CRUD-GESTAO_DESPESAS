@@ -70,7 +70,7 @@ def gerar_relatorio_gastos(usuario_id):
     
     plt.title(f"Relatório de Gastos por Categoria - Usuário {usuario_id}") # Define o título do gráfico
     plt.ylabel("") # Remove label do eixo Y
-    plt.legend(df_grouped.index, title="Categorias", loc="center left", bbox_to_anchor=(1, 0.5), fontsize=8)
+    plt.legend(df_grouped.index, title="Categorias", loc="center left", bbox_to_anchor=(1.3, 0.5), fontsize=8)
     plt.tight_layout() # Ajusta o layout para não cortar a legenda
     plt.show() # Exibe o gráfico
     

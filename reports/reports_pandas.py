@@ -10,7 +10,12 @@ def exportar_para_csv(usuario_id):
     """Exporta as despesas de um usuário específico para CSV"""
     try: # Alguma operação que pode gerar erro
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
-            query = "SELECT * FROM despesas WHERE usuario_id = %s"
+            query = """
+                SELECT d.despesa_id, d.usuario_id, c.nome AS Categoria, d.valor, d.data, d.descricao, d.fixa
+                FROM despesas d
+                JOIN categorias c ON d.categoria_id = c.categoria_id
+                WHERE d.usuario_id = %s
+            """
             df = pd.read_sql_query(query, conn, params=(usuario_id,)) # Executa a consulta e armazena o resultado em um DataFrame
             
             # Verifica se há despesas para exportar
@@ -20,23 +25,21 @@ def exportar_para_csv(usuario_id):
             
             print("Colunas disponíveis no DataFrame: ", df.columns)
             
+            # Converte 1 para "Fixa" e 0 para "Variável"
+            if 'fixa' in df.columns:
+                df['fixa'] = df['fixa'].map({1: 'Fixa', 0: 'Variável'}) # Converte antes de renomear
+            else:
+                print("Atenção: A coluna 'fixa' não foi encontrada no banco de dados. O tipo de despesa não será incluído.")
+            
             # Renomeia colunas para melhor visualização no Excel
             df.rename(columns={
                 'despesa_id': 'ID Despesa',
                 'usuario_id': 'ID Usuário',
-                'categoria_id': 'ID Categoria',
                 'valor': 'Valor',
                 'data': 'Data',
                 'descricao': 'Descrição',
                 'fixa': 'Tipo'
             }, inplace=True)
-            
-            # Converte 1 para "Fixa" e 0 para "Variável"
-            if 'fixa' in df.columns:
-                df['Tipo'] = df['fixa'].map({1: 'Fixa', 0: 'Variável'})
-                df.drop(columns=['fixa'], inplace=True) # Remove a coluna fixa original
-            else:
-                print("Atenção: A coluna 'fixa' não foi encontrada no banco de dados. O tipo de despesa não será incluído.")
                         
             # Ordena por data
             df.sort_values(by='Data', inplace=True)
