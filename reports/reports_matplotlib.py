@@ -33,6 +33,17 @@ def carregar_dados(usuario_id):
         
         return df
 
+def carregar_renda_mensal(usuario_id):
+    """
+    Obtém a Renda Mensal do usuário.
+    """
+    with get_db_connection() as conn:
+        query = """
+        SELECT renda_mensal FROM usuarios WHERE usuario_id = %s
+        """
+        result = conn.execute(query, (usuario_id,)).fetchone()
+        return result[0] if result else None
+        
 def formatar_rotulo(pct, valor_total):
         """
         Formata os rótulos exibindo porcentagem e valor 
@@ -52,39 +63,39 @@ def gerar_relatorio_gastos(usuario_id):
     visualizar os gastos de um usuário específico.
     """
     df = carregar_dados(usuario_id) # Carrega os dados do usuário
+    renda_mensal = carregar_renda_mensal(usuario_id) # Obtém a Renda Mensal
     
-    if df.empty: # Verifica se há dados para processar
+    if df.empty: 
         print("Nenhuma despesa encontrada para gerar o relatório.")
         return
     
     # Gera o gráfico de Pizza - Gastos por Categoria
-    plt.figure(figsize=(12, 5)) # Cria uma nova figura com tamanho de 12x5 polegadas
-    df_grouped = df.groupby("categoria")["valor"].sum() # Agrupa por categoria e soma os valores
+    plt.figure(figsize=(12, 5)) 
+    df_grouped = df.groupby("categoria")["valor"].sum() 
     
     df_grouped.plot(
-        kind="pie", # Tipo do gráfico: pizza (pie)
-        autopct=lambda pct: formatar_rotulo(pct, df_grouped.sum()), # Exibe rótulos com % e valores
-        color=plt.cm.Set3.colors, # Define uma paleta de cores
+        kind="pie", 
+        autopct=lambda pct: formatar_rotulo(pct, df_grouped.sum()), 
+        color=plt.cm.Set3.colors, 
         startangle=140
     )
     
-    plt.title(f"Relatório de Gastos por Categoria - Usuário {usuario_id}") # Define o título do gráfico
-    plt.ylabel("") # Remove label do eixo Y
+    plt.title(f"Relatório de Gastos por Categoria - Usuário {usuario_id}") 
+    plt.ylabel("") 
     plt.legend(df_grouped.index, title="Categorias", loc="center left", bbox_to_anchor=(1.3, 0.5), fontsize=8)
-    plt.tight_layout() # Ajusta o layout para não cortar a legenda
-    plt.show() # Exibe o gráfico
+    plt.tight_layout() 
+    plt.show() 
     
     # Gera o gráfico de Barras - Gastos Fixos vs Variáveis
-    plt.figure(figsize=(12, 5)) # Cria uma nova figura com tamanho de 12x5 polegadas
-    df_tipo = df.groupby("Tipo")["valor"].sum() # Agrupa valores por tipo (Fixa vs Variável)
+    plt.figure(figsize=(12, 5)) 
+    df_tipo = df.groupby("Tipo")["valor"].sum() 
     
-    # Verifica se há dados antes de gerar o gráfico
     if df_tipo.empty:
         print("Nenhuma despesa fixa ou variável encontrada para gerar o gráfico de Barras.")
         return
     
     df_tipo.plot(
-        kind="bar", # Tipo do gráfico: barras (bar)
+        kind="bar", 
         color=["#1f77b4", "#ff7f0e"],
         alpha=0.8
     )
@@ -93,13 +104,41 @@ def gerar_relatorio_gastos(usuario_id):
         plt.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=10)
     
     plt.xticks(rotation=0)
-    plt.title("Relatório de Despesas Fixas vs Variáveis") # Define o título do gráfico
+    plt.title("Relatório de Despesas Fixas vs Variáveis") 
     plt.ylabel("Valor (R$)")
-    plt.grid(axis="y", linestyle="--", alpha=0.6) # Linhas de grade no eixo Y   
-    plt.tight_layout() # Ajusta os espaçamentos entre os gráficos
-    plt.show() # Exibe o gráfico
+    plt.grid(axis="y", linestyle="--", alpha=0.6)   
+    plt.tight_layout() 
+    plt.show() 
     
-       
+    # Gera Gráfico de Barras - Comparação Gastos Totais vs Renda Mensal
+    if renda_mensal is not None:
+        plt.figure(figsize=(8,5))
+        total_gastos = df["valor"].sum()
+        
+        df_comparacao = pd.DataFrame({
+            "Categoria": ["Gastos Totais", "Renda Mensal"],
+            "Valor": [total_gastos, renda_mensal]
+        })
+        
+        df_comparacao.set_index("Categoria", inplace=True)   
+        df_comparacao.plot(
+        kind="bar",
+        color=["red", "green"], 
+        alpha=0.7
+        )
+        
+        for i, valor in enumerate((total_gastos, renda_mensal)):
+            plt.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=10)
+            
+        plt.title("Comparação Gastos Totais vs Renda Mensal")
+        plt.ylabel("Valor (R$)")
+        plt.grid(axis="y", linestyle="--", alpha=0.6)
+        plt.tight_layout()
+        plt.show()
+    else:
+        print("Renda Mensal não cadastrada para este usuário.")
+
+      
 if __name__ == "__main__": # Verifica se o script está sendo executado diretamente
     try:
         usuario_id = int(input("Digite o ID do usuário:"))

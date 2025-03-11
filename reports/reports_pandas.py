@@ -18,7 +18,6 @@ def exportar_para_csv(usuario_id):
             """
             df = pd.read_sql_query(query, conn, params=(usuario_id,)) # Executa a consulta e armazena o resultado em um DataFrame
             
-            # Verifica se há despesas para exportar
             if df.empty:
                 print("Nenhuma despesa encontrada para exportar.")
                 return
@@ -31,7 +30,7 @@ def exportar_para_csv(usuario_id):
             else:
                 print("Atenção: A coluna 'fixa' não foi encontrada no banco de dados. O tipo de despesa não será incluído.")
             
-            # Renomeia colunas para melhor visualização no Excel
+            # Verifica se há dados antes de gerar o gráfico
             df.rename(columns={
                 'despesa_id': 'ID Despesa',
                 'usuario_id': 'ID Usuário',
@@ -44,10 +43,10 @@ def exportar_para_csv(usuario_id):
             # Ordena por data
             df.sort_values(by='Data', inplace=True)
             
-            data_atual = datetime.now().strftime("%Y-%m-%d") # Obtém a data atual no formato YYYY-MM-DD
-            nome_arquivo = f"relatorio_despesas_usuario_{usuario_id}_{data_atual}.csv" # Gera o nome do arquivo CSV
+            data_atual = datetime.now().strftime("%Y-%m-%d") 
+            nome_arquivo = f"relatorio_despesas_usuario_{usuario_id}_{data_atual}.csv" 
             
-            df.to_csv(nome_arquivo, sep=';', index=False, encoding="utf-8-sig", decimal=',') # Salva os dados no arquivo CSV
+            df.to_csv(nome_arquivo, sep=';', index=False, encoding="utf-8-sig", decimal=',') 
             print(f"Relatório exportado com sucesso para {nome_arquivo}")
              
     except Exception:

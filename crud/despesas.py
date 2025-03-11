@@ -120,7 +120,7 @@ def deletar_despesa(despesa_id):
                 return False
             
             # Deleta a despesa
-            cursor.execute("DELETE FROM despesas WHERE despesa_id = %s", (despesa_id, )) # Adicionada a vírgula para garantir que seja uma tupla
+            cursor.execute("DELETE FROM despesas WHERE despesa_id = %s", (despesa_id, )) 
             conn.commit()
             print("Despesa deletada com sucesso!")
             return True

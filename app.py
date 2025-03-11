@@ -57,15 +57,17 @@ def menu_usuarios(): # Não é necessário passar um parâmetro, pois pode não 
         match escolha:
             case "1":
                 nome = str(input("Digite o nome do usuário: "))
-                email = input("Digite o email do usuário: ")
+                email = input("Digite o E-mail do usuário: ")
                 cpf = input("Digite o CPF do usuário: ")
-                inserir_usuario(nome, email, cpf)
+                renda_mensal = float(input("Digite a renda mensal do usuário: "))
+                inserir_usuario(nome, email, cpf, renda_mensal)
                 
             case "2":
                 usuario_id = int(input("Digite o ID do usuário: "))
                 nome = input("Digite o novo nome do usuário: ")
-                email = input("Digite o novo e-mail do usuário: ")
+                email = input("Digite o novo E-mail do usuário: ")
                 cpf = int(input("Digite o novo CPF do usuário: "))
+                renda_mensal = float(input("Digite a nova renda mensal do usuário: "))
                 atualizar_usuario(usuario_id, nome, email, cpf)
                 
             case "3":
