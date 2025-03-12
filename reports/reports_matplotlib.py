@@ -41,8 +41,8 @@ def carregar_renda_mensal(usuario_id):
         query = """
         SELECT renda_mensal FROM usuarios WHERE usuario_id = %s
         """
-        result = conn.execute(query, (usuario_id,)).fetchone()
-        return result[0] if result else None
+        df = pd.read_sql_query(query,conn, params=(usuario_id,))
+        return df
         
 def formatar_rotulo(pct, valor_total):
         """
@@ -70,7 +70,6 @@ def gerar_relatorio_gastos(usuario_id):
         return
     
     # Gera o gráfico de Pizza - Gastos por Categoria
-    plt.figure(figsize=(12, 5)) 
     df_grouped = df.groupby("categoria")["valor"].sum() 
     
     df_grouped.plot(
@@ -86,8 +85,7 @@ def gerar_relatorio_gastos(usuario_id):
     plt.tight_layout() 
     plt.show() 
     
-    # Gera o gráfico de Barras - Gastos Fixos vs Variáveis
-    plt.figure(figsize=(12, 5)) 
+    # Gera o gráfico de Barras - Gastos Fixos vs Variáveis 
     df_tipo = df.groupby("Tipo")["valor"].sum() 
     
     if df_tipo.empty:
@@ -100,7 +98,7 @@ def gerar_relatorio_gastos(usuario_id):
         alpha=0.8
     )
     
-    for i, valor in enumerate(df_tipo): # Adiciona os valores no topo das Barras
+    for i, valor in enumerate(df_tipo): 
         plt.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=10)
     
     plt.xticks(rotation=0)
@@ -111,24 +109,31 @@ def gerar_relatorio_gastos(usuario_id):
     plt.show() 
     
     # Gera Gráfico de Barras - Comparação Gastos Totais vs Renda Mensal
+    if not renda_mensal.empty:
+        renda_mensal = renda_mensal.iloc[0, 0]  
+    else:
+        renda_mensal = None  
+     
     if renda_mensal is not None:
-        plt.figure(figsize=(8,5))
         total_gastos = df["valor"].sum()
         
         df_comparacao = pd.DataFrame({
             "Categoria": ["Gastos Totais", "Renda Mensal"],
-            "Valor": [total_gastos, renda_mensal]
+            "Valor": [float(total_gastos), float(renda_mensal)]
         })
         
-        df_comparacao.set_index("Categoria", inplace=True)   
-        df_comparacao.plot(
-        kind="bar",
-        color=["red", "green"], 
-        alpha=0.7
+        df_comparacao["Valor"] = pd.to_numeric(df_comparacao["Valor"])
+        
+        df_comparacao.set_index("Categoria", inplace=True)
+        
+        grafico = df_comparacao.plot(
+        kind="bar",    
+        color=["green", "red"], 
+        alpha=0.6
         )
         
         for i, valor in enumerate((total_gastos, renda_mensal)):
-            plt.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=10)
+            grafico.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=10)
             
         plt.title("Comparação Gastos Totais vs Renda Mensal")
         plt.ylabel("Valor (R$)")
