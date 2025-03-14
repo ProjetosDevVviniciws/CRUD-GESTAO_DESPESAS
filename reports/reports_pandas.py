@@ -11,9 +11,10 @@ def exportar_para_csv(usuario_id):
     try: # Alguma operação que pode gerar erro
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
             query = """
-                SELECT d.despesa_id, d.usuario_id, c.nome AS Categoria, d.valor, d.data, d.descricao, d.fixa
+                SELECT c.nome AS Categoria, d.valor, d.data, d.descricao, d.fixa, u.renda_mensal
                 FROM despesas d
                 JOIN categorias c ON d.categoria_id = c.categoria_id
+                JOIN usuarios u ON d.usuario_id = u.usuario_id
                 WHERE d.usuario_id = %s
             """
             df = pd.read_sql_query(query, conn, params=(usuario_id,)) # Executa a consulta e armazena o resultado em um DataFrame
@@ -21,6 +22,7 @@ def exportar_para_csv(usuario_id):
             if df.empty:
                 print("Nenhuma despesa encontrada para exportar.")
                 return
+            
             
             print("Colunas disponíveis no DataFrame: ", df.columns)
             
@@ -32,8 +34,7 @@ def exportar_para_csv(usuario_id):
             
             # Verifica se há dados antes de gerar o gráfico
             df.rename(columns={
-                'despesa_id': 'ID Despesa',
-                'usuario_id': 'ID Usuário',
+                'renda_mensal': 'Renda Mensal',
                 'valor': 'Valor',
                 'data': 'Data',
                 'descricao': 'Descrição',
