@@ -33,6 +33,18 @@ def carregar_dados(usuario_id):
         
         return df
 
+def obter_nome_usuario(usuario_id):
+    """
+    Obtém o nome do usuário com base no ID.
+    """
+    with get_db_connection() as conn:
+        query = "SELECT nome FROM usuarios WHERE usuario_id = %s"
+        df = pd.read_sql_query(query, conn, params=(usuario_id,))
+        if not df.empty:
+            return df.iloc[0, 0]
+        else:
+            return "Usuário não encontrado"
+
 def carregar_renda_mensal(usuario_id):
     """
     Obtém a Renda Mensal do usuário.
@@ -63,6 +75,7 @@ def gerar_relatorio_gastos(usuario_id):
     visualizar os gastos de um usuário específico.
     """
     df = carregar_dados(usuario_id) # Carrega os dados do usuário
+    nome_usuario = obter_nome_usuario(usuario_id) # Obtém o nome do usuario
     renda_mensal = carregar_renda_mensal(usuario_id) # Obtém a Renda Mensal
     
     if df.empty: 
@@ -79,7 +92,7 @@ def gerar_relatorio_gastos(usuario_id):
         startangle=140
     )
     
-    plt.title(f"Relatório de Gastos por Categoria - Usuário {usuario_id}") 
+    plt.title(f"Relatório de Gastos por Categoria - Usuário: {nome_usuario}") 
     plt.ylabel("") 
     plt.legend(df_grouped.index, title="Categorias", loc="center left", bbox_to_anchor=(1.3, 0.5), fontsize=8)
     plt.tight_layout() 
