@@ -141,7 +141,7 @@ def gerar_relatorio_gastos(usuario_id):
         
         grafico = df_comparacao.plot(
         kind="bar",    
-        color=["green", "red"], 
+        color=["red" if total_gastos > renda_mensal else "green"], 
         alpha=0.6
         )
         
