@@ -87,14 +87,15 @@ def gerar_relatorio_gastos(usuario_id):
     
     df_grouped.plot(
         kind="pie", 
-        autopct=lambda pct: formatar_rotulo(pct, df_grouped.sum()), 
+        autopct=lambda pct: formatar_rotulo(pct, df_grouped.sum()),
+        textprops={'fontsize': 10.5}, 
         color=plt.cm.Set3.colors, 
         startangle=220
     )
     
-    plt.title(f"Relatório de Gastos por Categoria - Usuário: {nome_usuario}", fontsize=14) 
-    plt.ylabel("") 
-    plt.legend(df_grouped.index, title="Categorias", loc="center left", bbox_to_anchor=(1.2, 0.5), fontsize=10)
+    plt.title(f"Relatório de Gastos por Categoria - Usuário: {nome_usuario}", loc="center", fontsize=14) 
+    plt.ylabel("")
+    plt.legend(df_grouped.index, title="Categorias", loc="center left", bbox_to_anchor=(1.3, 0.5), fontsize=10.5, title_fontsize=13)
     plt.subplots_adjust(left=0.1, right=0.75) 
     plt.tight_layout() 
     plt.show() 
