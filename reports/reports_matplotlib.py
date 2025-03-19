@@ -89,12 +89,13 @@ def gerar_relatorio_gastos(usuario_id):
         kind="pie", 
         autopct=lambda pct: formatar_rotulo(pct, df_grouped.sum()), 
         color=plt.cm.Set3.colors, 
-        startangle=140
+        startangle=220
     )
     
-    plt.title(f"Relatório de Gastos por Categoria - Usuário: {nome_usuario}") 
+    plt.title(f"Relatório de Gastos por Categoria - Usuário: {nome_usuario}", fontsize=14) 
     plt.ylabel("") 
-    plt.legend(df_grouped.index, title="Categorias", loc="center left", bbox_to_anchor=(1.3, 0.5), fontsize=8)
+    plt.legend(df_grouped.index, title="Categorias", loc="center left", bbox_to_anchor=(1.2, 0.5), fontsize=10)
+    plt.subplots_adjust(left=0.1, right=0.75) 
     plt.tight_layout() 
     plt.show() 
     
@@ -108,17 +109,20 @@ def gerar_relatorio_gastos(usuario_id):
     df_tipo.plot(
         kind="bar", 
         color=["#1f77b4", "#ff7f0e"],
-        alpha=0.8
+        alpha=1
     )
     
     for i, valor in enumerate(df_tipo): 
-        plt.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=10)
+        plt.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=11)
     
-    plt.xticks(rotation=0)
-    plt.title("Relatório de Despesas Fixas vs Variáveis") 
-    plt.ylabel("Valor (R$)")
-    plt.grid(axis="y", linestyle="--", alpha=0.6)   
-    plt.tight_layout() 
+    plt.ylim(0, max(df_tipo) * 1.2)
+    plt.title("Relatório de Despesas Fixas vs Variáveis", fontsize=14) 
+    plt.xticks(rotation=0, fontsize=11)
+    plt.xlabel("Tipo", fontsize=12)
+    plt.yticks(rotation=0, fontsize=11)
+    plt.ylabel("Valor (R$)", fontsize=12)
+    plt.grid(axis="y", linestyle="--", alpha=1)
+    plt.subplots_adjust(bottom=0.15)   
     plt.show() 
     
     # Gera Gráfico de Barras - Comparação Gastos Totais vs Renda Mensal
@@ -142,15 +146,20 @@ def gerar_relatorio_gastos(usuario_id):
         grafico = df_comparacao.plot(
         kind="bar",    
         color=["red" if total_gastos > renda_mensal else "green"], 
-        alpha=0.6
+        alpha=1
         )
         
         for i, valor in enumerate((total_gastos, renda_mensal)):
-            grafico.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=10)
-            
-        plt.title("Comparação Gastos Totais vs Renda Mensal")
-        plt.ylabel("Valor (R$)")
-        plt.grid(axis="y", linestyle="--", alpha=0.6)
+            grafico.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=11)
+        
+        plt.ylim(0, max(total_gastos, renda_mensal) * 1.2)
+        plt.title("Comparação Gastos Totais vs Renda Mensal", fontsize=14)
+        plt.xticks(rotation=0, fontsize=11)
+        plt.xlabel("Categoria", fontsize=12)
+        plt.yticks(rotation=0, fontsize=11)    
+        plt.ylabel("Valor (R$)", fontsize=12)
+        plt.grid(axis="y", linestyle="--", alpha=1)
+        plt.subplots_adjust(left=0.15, right=0.95, bottom=0.2, top=0.85)
         plt.tight_layout()
         plt.show()
     else:
