@@ -32,7 +32,8 @@ def menu_principal():
                 menu_despesas(usuario_id)
             case "4":
                 usuario_id = input("Digite o ID do usuário: ")
-                menu_exportar_para_csv(usuario_id)
+                mes_ano = input("Digite o mês no formato YYYY-MM (exemplo: 2025-03): ")
+                menu_exportar_para_csv(usuario_id, mes_ano)
             case "5":
                 usuario_id = input("Digite o ID do usuário: ")
                 menu_gerar_relatorio_gastos(usuario_id)
@@ -194,7 +195,7 @@ def menu_despesas(usuario_id):
 
 # ========================= MENU EXPORTAR CSV =========================
 
-def menu_exportar_para_csv(usuario_id):
+def menu_exportar_para_csv(usuario_id, mes_ano):
     while True:
         print("\n=== Menu Exportar para CSV ===")
         print("1 - Exportar para CSV")
@@ -204,7 +205,7 @@ def menu_exportar_para_csv(usuario_id):
         
         match escolha:
             case "1":
-                exportar_para_csv(usuario_id)
+                exportar_para_csv(usuario_id, mes_ano)
             case "0":
                 break
             case _:

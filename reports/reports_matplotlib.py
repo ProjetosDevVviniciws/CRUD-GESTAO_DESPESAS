@@ -6,7 +6,11 @@ import pandas as pd # Importa a biblioteca pandas para manipulação de dados
 import matplotlib.pyplot as plt # Importa matplotlib.pyplot para visualização de gráficos e figuras personalizadas
 from database.db_config import get_db_connection # Importa a função para obter a conexão com o banco de dados
 
-def get_db_connection(): # Função para conexão com o banco de dados
+def get_db_connection():
+    """
+    Cria e retorna uma conexão 
+    segura com o banco de dados.
+    """
     password = quote_plus("@program225X")  # Codifica a senha para evitar erros com caracteres especiais
     engine = create_engine(f"mysql+pymysql://Vinicius:{password}@localhost/gestao_despesas",
                            pool_pre_ping=True,  # Evita erros de conexão perdida
