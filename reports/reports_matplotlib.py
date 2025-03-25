@@ -17,19 +17,20 @@ def get_db_connection():
                            connect_args={"charset": "utf8mb4"})  # Garante suporte a caracteres especiais
     return engine.connect()
 
-def carregar_dados(usuario_id):
+def carregar_dados(usuario_id, mes_ano):
     """
     Carrega as despesas de um usuário específico do banco de dados para um DataFrame do Pandas e
     inclui a coluna 'fixa' para diferenciar despesas fixas e variáveis.
     """
     with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
         query = """
-        SELECT c.nome AS categoria, d.valor, d.fixa
+        SELECT c.nome AS categoria, d.valor, d.data, d.fixa
         FROM despesas d
-        JOIN categorias c ON d.categoria_id = c.categoria_id 
-        WHERE d.usuario_id = %s
+        JOIN categorias c ON d.categoria_id = c.categoria_id
+        JOIN usuarios u ON d.usuario_id =  u.usuario_id 
+        WHERE d.usuario_id = %s AND DATE_FORMAT(d.data, '%%Y-%%m') = %s
         """
-        df = pd.read_sql_query(query, conn, params=(usuario_id,)) # Filtra pelo usuário
+        df = pd.read_sql_query(query, conn, params=(usuario_id, mes_ano)) # Filtra pelo usuário e mês/ano
         
         # Converte 1 para "Fixa" e 0 para "Variável"
         df["Tipo"] = df["fixa"].map({1: "Fixa", 0: "Variável"})
@@ -49,16 +50,22 @@ def obter_nome_usuario(usuario_id):
         else:
             return "Usuário não encontrado"
 
-def carregar_renda_mensal(usuario_id):
+def carregar_renda_mensal(usuario_id, mes_ano):
     """
-    Obtém a Renda Mensal do usuário.
+    Obtém a Renda Mensal do usuário para um mês e ano específico.
     """
     with get_db_connection() as conn:
         query = """
-        SELECT renda_mensal FROM usuarios WHERE usuario_id = %s
+        SELECT renda_mensal FROM historico_renda 
+        WHERE usuario_id = %s AND DATE_FORMAT(d.data '%%Y-%%m') = %s
+        ORDER BY data_registro DESC LIMIT 1
         """
-        df = pd.read_sql_query(query,conn, params=(usuario_id,))
-        return df
+        df = pd.read_sql_query(query,conn, params=(usuario_id, mes_ano))
+        
+        if not df.empty:
+            return df.iloc[0, 0] # Retorna a renda mensal encontrada
+        else:
+            return 0 # Retorna 0 caso não haja renda registrada para o período
         
 def formatar_rotulo(pct, valor_total):
         """
@@ -73,14 +80,14 @@ def formatar_rotulo(pct, valor_total):
             return f"{pct:.1f}%\n R${valor:.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
         return "" # Se o valor for zero, não exibe rótulo
 
-def gerar_relatorio_gastos(usuario_id):
+def gerar_relatorio_gastos(usuario_id, mes_ano):
     """
     Gera um gráfico de Pizza e Barras para 
     visualizar os gastos de um usuário específico.
     """
-    df = carregar_dados(usuario_id) # Carrega os dados do usuário
+    df = carregar_dados(usuario_id, mes_ano) # Carrega os dados do usuário
     nome_usuario = obter_nome_usuario(usuario_id) # Obtém o nome do usuario
-    renda_mensal = carregar_renda_mensal(usuario_id) # Obtém a Renda Mensal
+    renda_mensal = carregar_renda_mensal(usuario_id, mes_ano) # Obtém a Renda Mensal
     
     if df.empty: 
         print("Nenhuma despesa encontrada para gerar o relatório.")
@@ -158,7 +165,7 @@ def gerar_relatorio_gastos(usuario_id):
             grafico.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=11)
         
         plt.ylim(0, max(total_gastos, renda_mensal) * 1.2)
-        plt.title("Comparação Gastos Totais vs Renda Mensal", fontsize=14)
+        plt.title("Comparação Gastos Totais vs Renda Mensal - Data: {mes_ano}", fontsize=14)
         plt.xticks(rotation=0, fontsize=11)
         plt.xlabel("Categoria", fontsize=12)
         plt.yticks(rotation=0, fontsize=11)    
@@ -174,6 +181,7 @@ def gerar_relatorio_gastos(usuario_id):
 if __name__ == "__main__": # Verifica se o script está sendo executado diretamente
     try:
         usuario_id = int(input("Digite o ID do usuário:"))
+        mes_ano = input("Digite o mês e ano no formato (YYYY-MM): ")
         gerar_relatorio_gastos(usuario_id)
     except ValueError:
         print("ID do usuário inválido. Insira um número inteiro.")
