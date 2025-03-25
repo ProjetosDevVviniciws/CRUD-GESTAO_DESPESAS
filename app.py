@@ -70,7 +70,7 @@ def menu_usuarios(): # Não é necessário passar um parâmetro, pois pode não 
                 email = input("Digite o novo E-mail do usuário: ")
                 cpf = int(input("Digite o novo CPF do usuário: "))
                 renda_mensal = float(input("Digite a nova renda mensal do usuário: "))
-                atualizar_usuario(usuario_id, nome, email, cpf)
+                atualizar_usuario(usuario_id, nome, email, cpf, renda_mensal)
                 
             case "3":
                 usuario_id = int(input("Digite o ID do usuário: "))
