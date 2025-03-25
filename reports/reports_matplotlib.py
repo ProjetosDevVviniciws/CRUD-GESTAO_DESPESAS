@@ -57,7 +57,7 @@ def carregar_renda_mensal(usuario_id, mes_ano):
     with get_db_connection() as conn:
         query = """
         SELECT renda_mensal FROM historico_renda 
-        WHERE usuario_id = %s AND DATE_FORMAT(d.data '%%Y-%%m') = %s
+        WHERE usuario_id = %s AND DATE_FORMAT(data_registro, '%%Y-%%m') = %s
         ORDER BY data_registro DESC LIMIT 1
         """
         df = pd.read_sql_query(query,conn, params=(usuario_id, mes_ano))
@@ -65,7 +65,7 @@ def carregar_renda_mensal(usuario_id, mes_ano):
         if not df.empty:
             return df.iloc[0, 0] # Retorna a renda mensal encontrada
         else:
-            return 0 # Retorna 0 caso não haja renda registrada para o período
+            return None # Retorna None caso não haja renda registrada para o período
         
 def formatar_rotulo(pct, valor_total):
         """
@@ -104,7 +104,7 @@ def gerar_relatorio_gastos(usuario_id, mes_ano):
         startangle=220
     )
     
-    plt.title(f"Relatório de Gastos por Categoria - Usuário: {nome_usuario}", loc="center", fontsize=14) 
+    plt.title(f"Relatório de Gastos por Categoria - Data: {mes_ano}", loc="center", fontsize=14) 
     plt.ylabel("")
     plt.legend(df_grouped.index, title="Categorias", loc="center left", bbox_to_anchor=(1.3, 0.5), fontsize=10.5, title_fontsize=13)
     plt.subplots_adjust(left=0.1, right=0.75) 
@@ -128,7 +128,7 @@ def gerar_relatorio_gastos(usuario_id, mes_ano):
         plt.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=11)
     
     plt.ylim(0, max(df_tipo) * 1.2)
-    plt.title("Relatório de Despesas Fixas vs Variáveis", fontsize=14) 
+    plt.title(f"Relatório de Despesas Fixas vs Variáveis - Data: {mes_ano}", fontsize=14) 
     plt.xticks(rotation=0, fontsize=11)
     plt.xlabel("Tipo", fontsize=12)
     plt.yticks(rotation=0, fontsize=11)
@@ -137,12 +137,7 @@ def gerar_relatorio_gastos(usuario_id, mes_ano):
     plt.subplots_adjust(bottom=0.15)   
     plt.show() 
     
-    # Gera Gráfico de Barras - Comparação Gastos Totais vs Renda Mensal
-    if not renda_mensal.empty:
-        renda_mensal = renda_mensal.iloc[0, 0]  
-    else:
-        renda_mensal = None  
-     
+    # Gera Gráfico de Barras - Comparação Gastos Totais vs Renda Mensal 
     if renda_mensal is not None:
         total_gastos = df["valor"].sum()
         
@@ -165,7 +160,7 @@ def gerar_relatorio_gastos(usuario_id, mes_ano):
             grafico.text(i, valor + (valor * 0.02), f"R${valor:.2f}".replace(".", ","), ha="center", fontsize=11)
         
         plt.ylim(0, max(total_gastos, renda_mensal) * 1.2)
-        plt.title("Comparação Gastos Totais vs Renda Mensal - Data: {mes_ano}", fontsize=14)
+        plt.title(f"Comparação Gastos Totais vs Renda Mensal - Data: {mes_ano}", fontsize=14)
         plt.xticks(rotation=0, fontsize=11)
         plt.xlabel("Categoria", fontsize=12)
         plt.yticks(rotation=0, fontsize=11)    
@@ -182,7 +177,7 @@ if __name__ == "__main__": # Verifica se o script está sendo executado diretame
     try:
         usuario_id = int(input("Digite o ID do usuário:"))
         mes_ano = input("Digite o mês e ano no formato (YYYY-MM): ")
-        gerar_relatorio_gastos(usuario_id)
+        gerar_relatorio_gastos(usuario_id, mes_ano)
     except ValueError:
         print("ID do usuário inválido. Insira um número inteiro.")
      
