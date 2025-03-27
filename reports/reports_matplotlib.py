@@ -38,28 +38,38 @@ def carregar_dados(usuario_id, mes_ano):
         
         return df
 
-
 def carregar_renda_mensal(usuario_id, mes_ano):
     """
     Obtém a Renda Mensal do usuário para um mês e ano específico.
     """
     with get_db_connection() as conn:
-        # Primeiro, tentar buscar na tabela de histórico
+        # Primeiro, tenta pegar a renda exata para aquele mês
         query = """
         SELECT renda_mensal FROM historico_renda 
         WHERE usuario_id = %s AND DATE_FORMAT(data_registro, '%%Y-%%m') = %s
         ORDER BY data_registro DESC LIMIT 1
         """
         df = pd.read_sql_query(query, conn, params=(usuario_id, mes_ano))
+        print("Resultado da consulta em historico_renda", df)
         
         if not df.empty:
             return df.iloc[0, 0] # Retorna a renda mensal encontrada
-        else:
-            return None # Retorna None caso não haja renda registrada para o período
+        
+        # Se não encontrou uma renda exata, busca a última renda antes desse mês
+        query = """
+        SELECT renda_mensal FROM historico_renda 
+        WHERE usuario_id = %s AND DATE_FORMAT(data_registro, '%%Y-%%m') < %s
+        ORDER BY data_registro DESC LIMIT 1
+        """
+        df = pd.read_sql_query(query, conn, params=(usuario_id, mes_ano))
+
+        if not df.empty:
+            return df.iloc[0, 0]  # Retorna a última renda antes do mês solicitado
         
         # Se não encontrar no historico_renda, busca na tabela 'usuarios'
         query_usuario = "SELECT renda_mensal FROM usuarios WHERE usuario_id  = %s"
-        df = pd.read_sql_query(query_usuario, conn, (usuario_id,))
+        df = pd.read_sql_query(query_usuario, conn, params=(usuario_id,))
+        print("Resultado da consulta em usuarios", df)
     
         if not df.empty:
             return df.iloc[0, 0]
