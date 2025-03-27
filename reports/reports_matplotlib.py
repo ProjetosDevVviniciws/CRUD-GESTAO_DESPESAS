@@ -38,35 +38,34 @@ def carregar_dados(usuario_id, mes_ano):
         
         return df
 
-def obter_nome_usuario(usuario_id):
-    """
-    Obtém o nome do usuário com base no ID.
-    """
-    with get_db_connection() as conn:
-        query = "SELECT nome FROM usuarios WHERE usuario_id = %s"
-        df = pd.read_sql_query(query, conn, params=(usuario_id,))
-        if not df.empty:
-            return df.iloc[0, 0]
-        else:
-            return "Usuário não encontrado"
 
 def carregar_renda_mensal(usuario_id, mes_ano):
     """
     Obtém a Renda Mensal do usuário para um mês e ano específico.
     """
     with get_db_connection() as conn:
+        # Primeiro, tentar buscar na tabela de histórico
         query = """
         SELECT renda_mensal FROM historico_renda 
         WHERE usuario_id = %s AND DATE_FORMAT(data_registro, '%%Y-%%m') = %s
         ORDER BY data_registro DESC LIMIT 1
         """
-        df = pd.read_sql_query(query,conn, params=(usuario_id, mes_ano))
+        df = pd.read_sql_query(query, conn, params=(usuario_id, mes_ano))
         
         if not df.empty:
             return df.iloc[0, 0] # Retorna a renda mensal encontrada
         else:
             return None # Retorna None caso não haja renda registrada para o período
         
+        # Se não encontrar no historico_renda, busca na tabela 'usuarios'
+        query_usuario = "SELECT renda_mensal FROM usuarios WHERE usuario_id  = %s"
+        df = pd.read_sql_query(query_usuario, conn, (usuario_id,))
+    
+        if not df.empty:
+            return df.iloc[0, 0]
+        else:
+            return None
+           
 def formatar_rotulo(pct, valor_total):
         """
         Formata os rótulos exibindo porcentagem e valor 
@@ -86,8 +85,8 @@ def gerar_relatorio_gastos(usuario_id, mes_ano):
     visualizar os gastos de um usuário específico.
     """
     df = carregar_dados(usuario_id, mes_ano) # Carrega os dados do usuário
-    nome_usuario = obter_nome_usuario(usuario_id) # Obtém o nome do usuario
     renda_mensal = carregar_renda_mensal(usuario_id, mes_ano) # Obtém a Renda Mensal
+    print(f"Renda Mensal carregada: {renda_mensal}")
     
     if df.empty: 
         print("Nenhuma despesa encontrada para gerar o relatório.")

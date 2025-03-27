@@ -16,7 +16,7 @@ def inserir_usuario(nome, email, cpf, renda_mensal):
                 return False
             
             # Insere o usuário
-            sql = "INSERT INTO usuarios (nome, email, cpf) VALUES (%s, %s, %s, %s)"
+            sql = "INSERT INTO usuarios (nome, email, cpf, renda_mensal) VALUES (%s, %s, %s, %s)"
             cursor.execute(sql, (nome, email, cpf, renda_mensal))
             conn.commit()
             print("Usuário inserido com sucesso!")
