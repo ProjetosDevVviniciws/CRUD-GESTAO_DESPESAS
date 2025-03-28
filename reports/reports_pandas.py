@@ -27,16 +27,19 @@ def exportar_para_csv(usuario_id, mes_ano):
             return engine.connect()
 
         query = """
-                SELECT c.nome AS Categoria, d.valor, d.data, d.descricao, d.fixa, u.renda_mensal
-                FROM despesas d
+                SELECT c.nome AS Categoria, d.valor, d.data, d.descricao, d.fixa,
+                        (SELECT hr.renda_mensal FROM historico_renda hr
+                        WHERE hr.usuario_id = d.usuario_id
+                        AND DATE_FORMAT(hr.data_registro, '%%Y-%%m') = %s
+                        ORDER BY hr.data_registro DESC LIMIT 1) AS renda_mensal
+                FROM despesas d  
                 JOIN categorias c ON d.categoria_id = c.categoria_id
-                JOIN usuarios u ON d.usuario_id = u.usuario_id
                 WHERE d.usuario_id = %s AND DATE_FORMAT(d.data, '%%Y-%%m') = %s
             """
             
         # Criando conexão e executando a query
         with get_db_connection() as conn: # Isso garante que a conexão seja fechada automaticamente
-            df = pd.read_sql_query(query, conn, params=(usuario_id, mes_ano)) # Executa a consulta e armazena o resultado em um DataFrame
+            df = pd.read_sql_query(query, conn, params=(mes_ano, usuario_id, mes_ano)) # Executa a consulta e armazena o resultado em um DataFrame
             
         if df.empty:
             print("Nenhuma despesa encontrada para exportar.")
