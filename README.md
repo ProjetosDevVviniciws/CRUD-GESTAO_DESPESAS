@@ -1,7 +1,6 @@
 ## Projeto DinheiroSábio - Documentação Oficial
 
 **Introdução**
-
 O projeto DinheiroSábio, tem como objetivo ajudar os usuários a gerenciar suas despesas de forma simples e eficiente. Com ele, é possível visualizar seus gastos por meio de gráficos interativos, incluindo:
 
 ✅ Gráfico de Pizza – Exibe a distribuição dos gastos por categoria.
@@ -13,6 +12,40 @@ Além disso, o usuário pode exportar suas despesas e informações financeiras 
 
 ## Funcionalidades
 
+**Menu Usuários**
+* **Cadastrar Usuários:** Permite ao administrador do sistema adicionar novos usuários ao 
+banco de dados, proporcionando o gerenciamento de contas e informações pessoais de cada usuário.
+* **Atualizar Usuários:** Oferece a possibilidade de editar dados de usuários existentes, como
+nome, e-mail e outras informações relevantes.
+* **Deletar Usuários:** Permite remover usuários do sistema, garantindo que o banco de dados
+esteja atualizado com as informações mais recentes.
+
+**Menu Categorias**
+* **Cadastrar Categorias:** O usuário pode adicionar novas categorias de despesas, como alimentação,
+transporte, lazer, entre outras. Isso ajuda a organizar melhor os gastos.
+* **Listar Categorias:** Exibe todas as categorias cadastradas no sistema, permitindo que o usuário
+visualize e organize suas despesas de forma mais eficiente.
+* **Atualizar Categorias:** Permite editar o nome ou a descrição de categorias existentes, garantindo
+flexibilidade caso o usuário queira reorganizar suas finanças.
+* **Deletar Categorias:** Facilita a remoção de categorias que não são mais necessárias, mantendo o
+sistema organizado e livre de dados desnecessários.
+
+**Menu Despesas**
+* **Cadastrar Despesas:** O usuário pode registrar novas despesas, associando-as às categorias previamente
+criadas, especificando valores, datas e outras informações relevantes.
+* **Listar Despesas:** Exibe todas as despesas registradas pelo usuário, permitindo que ele veja rapidamente
+seus gastos em diferentes períodos e categorias.
+* **Atualizar Despesas:** Permite ao usuário editar despesas já registradas, caso haja necessidade de corrigir
+algum valor ou categoria.
+* **Deletar Despesas:** Oferece a possibilidade de excluir despesas registradas, mantendo o controle financeiro atualizado e sem erros.
+
+**Menu Exportar para CSV**
+* **Exportar Despesas e Informações Financeiras:** Permite ao usuário exportar seus dados financeiros (despesas e categorias) em formato CSV, com a possibilidade de filtrar as informações por mês. Esse formato pode ser aberto em programas como o Excel, facilitando a visualização e o controle das finanças. A exportação por mês permite ao usuário analisar suas finanças de forma mais detalhada, por período.
+
+**Menu Gerar Relatório de Gastos**
+* **Gráfico de Pizza – Gastos por Categoria:** Este gráfico exibe a distribuição percentual dos gastos do usuário por categoria, filtrando os dados conforme o mês selecionado. Ele permite uma visualização rápida de como o dinheiro foi gasto em diferentes áreas durante o mês escolhido.
+* **Gráfico de Barras – Gastos Fixos vs Variáveis:** Compara os gastos fixos (como aluguel, contas de serviços públicos) com os gastos variáveis (como alimentação, entretenimento), filtrados por mês. Esse gráfico ajuda o usuário a identificar onde pode economizar durante o mês analisado.
+* **Gráfico de Barras – Gastos Totais vs Renda Mensal:** Este gráfico compara o total de gastos do usuário com sua renda mensal, filtrado pelo mês escolhido. Ele permite uma análise clara de se o usuário está gastando mais do que ganha naquele mês, facilitando a tomada de decisões financeiras mais conscientes.
 
 
 ## Tecnologias Utilizadas
@@ -46,39 +79,39 @@ Além disso, o usuário pode exportar suas despesas e informações financeiras 
 
 ## Dependências Adicionais
 
-greenlet: Suporte para microthreads, utilizado pelo SQLAlchemy.
+* **greenlet:** Suporte para microthreads, utilizado pelo SQLAlchemy.
 
-kiwisolver: Resolves equações matemáticas, utilizado pelo Matplotlib.
+* **kiwisolver:** Resolves equações matemáticas, utilizado pelo Matplotlib.
 
-cffi: Interface para chamar funções C a partir do Python, usada em bibliotecas criptográficas.
+* **cffi:** Interface para chamar funções C a partir do Python, usada em bibliotecas criptográficas.
 
-contourpy: Para criar contornos em gráficos científicos, utilizado pelo Matplotlib.
+* **contourpy:** Para criar contornos em gráficos científicos, utilizado pelo Matplotlib.
 
-cycler: Gerencia ciclos de cores e estilos em gráficos, utilizado pelo Matplotlib.
+* **cycler:** Gerencia ciclos de cores e estilos em gráficos, utilizado pelo Matplotlib.
 
-fonttools: Manipula fontes, utilizado para renderização de textos em gráficos.
+* **fonttools:** Manipula fontes, utilizado para renderização de textos em gráficos.
 
-pycparser: Parser para código C, utilizado por bibliotecas como cffi.
+* **pycparser:** Parser para código C, utilizado por bibliotecas como cffi.
 
-pyparsing: Biblioteca para análise e processamento de strings baseadas em gramáticas.
+* **pyparsing:** Biblioteca para análise e processamento de strings baseadas em gramáticas.
 
-six: Fornece compatibilidade entre Python 2 e 3.
+* **six:** Fornece compatibilidade entre Python 2 e 3.
 
-tzdata: Banco de dados de fusos horários.
+* **tzdata:** Banco de dados de fusos horários.
 
-python-dateutil: Facilita o trabalho com datas e fusos horários.
+* **python-dateutil:** Facilita o trabalho com datas e fusos horários.
 
-pytz: Manipula fusos horários compatíveis com o datetime do Python.
+* **pytz:** Manipula fusos horários compatíveis com o datetime do Python.
 
-packaging: Lida com metadados de pacotes Python.
+* **packaging:** Lida com metadados de pacotes Python.
 
-mysql-connector-python: Alternativa ao SQLAlchemy para conectar Python ao MySQL.
+* **mysql-connector-python:** Alternativa ao SQLAlchemy para conectar Python ao MySQL.
 
-PyMySQL: Outra alternativa para conectar Python ao MySQL.
+* **PyMySQL:** Outra alternativa para conectar Python ao MySQL.
 
-pillow: Biblioteca para processamento de imagens.
+* **pillow:** Biblioteca para processamento de imagens.
 
-typing_extensions: Fornece tipos avançados para anotações no código.
+* **typing_extensions:** Fornece tipos avançados para anotações no código.
 
 
 ## Diferenciais do Projeto
