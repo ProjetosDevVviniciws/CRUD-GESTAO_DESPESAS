@@ -86,11 +86,6 @@ algum valor ou categoria.
 **Visualização de Dados**
 * **Matplotlib:** Biblioteca para criação de gráficos e visualizações de dados financeiros.
 
-**Segurança e Criptografia**
-* **bcrypt:** Biblioteca para hashing de senhas e segurança.
-
-* **cryptography:** Biblioteca para criptografia de dados sensíveis.
-
 
 ## Dependências Adicionais
 
@@ -110,15 +105,9 @@ algum valor ou categoria.
 
 * **pyparsing:** Biblioteca para análise e processamento de strings baseadas em gramáticas.
 
-* **six:** Fornece compatibilidade entre Python 2 e 3.
-
-* **tzdata:** Banco de dados de fusos horários.
-
 * **python-dateutil:** Facilita o trabalho com datas e fusos horários.
 
 * **pytz:** Manipula fusos horários compatíveis com o datetime do Python.
-
-* **packaging:** Lida com metadados de pacotes Python.
 
 * **mysql-connector-python:** Alternativa ao SQLAlchemy para conectar Python ao MySQL.
 
@@ -126,25 +115,44 @@ algum valor ou categoria.
 
 * **pillow:** Biblioteca para processamento de imagens.
 
-* **typing_extensions:** Fornece tipos avançados para anotações no código.
-
 
 ## Diferenciais do Projeto
 
+* **Filtragem de Despesas por Mês:** Tanto na exportação para CSV quanto nos relatórios
+gráficos, os usuários podem filtrar suas despesas por mês, permitindo uma análise financeira
+mais detalhada e organizada.
+
+* **Análise Visual Intuitiva:** Os gráficos gerados com Matplotlib permitem que os usuários
+visualizem seus gastos de maneira clara e eficiente, ajudando na tomada de decisões financeiras.
+
+* **Exportação de Dados em CSV:** Permite que os usuários exportem seus registros financeiros
+e analisem as informações em softwares como Excel, possibilitando um controle financeiro mais
+aprofundado.
+
+* **Organização Modular:** O projeto está bem estruturado, separando funcionalidades em menus
+específicos (Usuários, Categorias, Despesas, Exportação, Relatórios), o que melhora a manutenção
+e escalabilidade do código.
+
+* **Pontencial de Expansão:** A arquitetura do sistema permite futuras melhorias, como:
+Novas funcionalidades nos menus, como dashboards e notificações financeiras. E Aprimoramento
+da interface, tornando-a mais moderna e responsiva para acesso em diferentes dispositivos.
 
 
-### Criação do Banco de Dados e Tabelas
+## Criação do Banco de Dados e Tabelas
 
 CREATE DATABASE gestao_despesas;
 USE gestao_despesas;
 
+
 CREATE USER Vinicius@localhost IDENTIFIED BY '@program225X';
 SELECT * FROM mysql.user;
+
 
 GRANT ALL
 ON gestao_despesas.*
 TO Vinicius@localhost;
 SHOW GRANTS FOR Vinicius@localhost;
+
 
 CREATE TABLE usuarios (
 	usuario_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -154,6 +162,7 @@ CREATE TABLE usuarios (
     renda_mensal DECIMAL(10,2) NOT NULL DEFAULT 0.00
 );
 
+
 CREATE TABLE categorias (
 	categoria_id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -161,6 +170,7 @@ CREATE TABLE categorias (
     UNIQUE (usuario_id, nome), -- Restrição de unicidade por usuário
     FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE despesas (
 	despesa_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -173,7 +183,9 @@ CREATE TABLE despesas (
     FOREIGN KEY (categoria_id) REFERENCES categorias(categoria_id) ON DELETE CASCADE
 );
 
+
 ALTER TABLE despesas ADD COLUMN fixa TINYINT NOT NULL DEFAULT 0;
+
 
 CREATE TABLE historico_renda (
     historico_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -192,6 +204,7 @@ VALUES
     ('Paulo Junior', 'paulojunior@gmail.com', '00097654857431', 4000.00),
 	('Vitor Emanuel', 'vitoremanuel@gmail.com', '99877876500532', 3700.00);
 
+
 INSERT INTO categorias (usuario_id, nome)
 VALUES
 	(1, 'Academia'),
@@ -200,6 +213,7 @@ VALUES
     (4, 'Alimentação'),
     (5, 'Internet');
 
+
 INSERT INTO despesas (usuario_id, categoria_id, valor, data, descricao, fixa)
 VALUES
 	(1, 1, 120.00, '2025-02-07', 'Mensalidade da Academia', 1),
@@ -207,6 +221,7 @@ VALUES
 	(3, 3, 60.00, '2025-02-07', 'Plano de Celular', 1),
 	(4, 4, 350.00, '2025-02-07', 'Alimentos para Dieta', 0),
 	(5, 5, 100.00, '2025-02-07', 'Internet', 1);
+
 
 INSERT INTO historico_renda (usuario_id, renda_mensal, data_registro)
 VALUES
