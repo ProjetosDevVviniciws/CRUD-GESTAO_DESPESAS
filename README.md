@@ -140,40 +140,34 @@ da interface, tornando-a mais moderna e responsiva para acesso em diferentes dis
 
 ## Criação do Banco de Dados e Tabelas
 
+```sql
 CREATE DATABASE gestao_despesas;
 USE gestao_despesas;
-
 
 CREATE USER Vinicius@localhost IDENTIFIED BY '@program225X';
 SELECT * FROM mysql.user;
 
-
-GRANT ALL
-ON gestao_despesas.*
-TO Vinicius@localhost;
+GRANT ALL ON gestao_despesas.* TO Vinicius@localhost;
 SHOW GRANTS FOR Vinicius@localhost;
 
-
 CREATE TABLE usuarios (
-	usuario_id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     cpf VARCHAR(14) UNIQUE NOT NULL,
     renda_mensal DECIMAL(10,2) NOT NULL DEFAULT 0.00
 );
 
-
 CREATE TABLE categorias (
-	categoria_id INT AUTO_INCREMENT PRIMARY KEY,
+    categoria_id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     nome VARCHAR(255) NOT NULL,
     UNIQUE (usuario_id, nome), -- Restrição de unicidade por usuário
     FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE
 );
 
-
 CREATE TABLE despesas (
-	despesa_id INT AUTO_INCREMENT PRIMARY KEY,
+    despesa_id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
     categoria_id INT NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
@@ -183,9 +177,7 @@ CREATE TABLE despesas (
     FOREIGN KEY (categoria_id) REFERENCES categorias(categoria_id) ON DELETE CASCADE
 );
 
-
 ALTER TABLE despesas ADD COLUMN fixa TINYINT NOT NULL DEFAULT 0;
-
 
 CREATE TABLE historico_renda (
     historico_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -195,38 +187,31 @@ CREATE TABLE historico_renda (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE
 );
 
+INSERT INTO usuarios (nome, email, cpf, renda_mensal) VALUES
+('Vinícius', 'vinip8372@gmail.com', '12378596456085', 5000.00),
+('Henrique', 'henrique21@gmail.com', '00987696798652', 3500.00),
+('Eduardo', 'eduardo@gmail.com', '00098769865432', 4300.00),
+('Paulo Junior', 'paulojunior@gmail.com', '00097654857431', 4000.00),
+('Vitor Emanuel', 'vitoremanuel@gmail.com', '99877876500532', 3700.00);
 
-INSERT INTO usuarios (nome, email, cpf, renda_mensal)
-VALUES
-	('Vinícius', 'vinip8372@gmail.com', '12378596456085', 5000.00),
-    ('Henrique', 'henrique21@gmail.com', '00987696798652', 3500.00),
-    ('Eduardo', 'eduardo@gmail.com', '00098769865432', 4300.00),
-    ('Paulo Junior', 'paulojunior@gmail.com', '00097654857431', 4000.00),
-	('Vitor Emanuel', 'vitoremanuel@gmail.com', '99877876500532', 3700.00);
+INSERT INTO categorias (usuario_id, nome) VALUES
+(1, 'Academia'),
+(2, 'Combustível'),
+(3, 'Plano de Celular'),
+(4, 'Alimentação'),
+(5, 'Internet');
 
+INSERT INTO despesas (usuario_id, categoria_id, valor, data, descricao, fixa) VALUES
+(1, 1, 120.00, '2025-02-07', 'Mensalidade da Academia', 1),
+(2, 2, 150.00, '2025-02-07', 'Combustível do Mês', 0),
+(3, 3, 60.00, '2025-02-07', 'Plano de Celular', 1),
+(4, 4, 350.00, '2025-02-07', 'Alimentos para Dieta', 0),
+(5, 5, 100.00, '2025-02-07', 'Internet', 1);
 
-INSERT INTO categorias (usuario_id, nome)
-VALUES
-	(1, 'Academia'),
-    (2, 'Combustível'),
-    (3, 'Plano de Celular'),
-    (4, 'Alimentação'),
-    (5, 'Internet');
-
-
-INSERT INTO despesas (usuario_id, categoria_id, valor, data, descricao, fixa)
-VALUES
-	(1, 1, 120.00, '2025-02-07', 'Mensalidade da Academia', 1),
-    (2, 2, 150.00, '2025-02-07', 'Combustível do Mês', 0),
-	(3, 3, 60.00, '2025-02-07', 'Plano de Celular', 1),
-	(4, 4, 350.00, '2025-02-07', 'Alimentos para Dieta', 0),
-	(5, 5, 100.00, '2025-02-07', 'Internet', 1);
-
-
-INSERT INTO historico_renda (usuario_id, renda_mensal, data_registro)
-VALUES
-	(1, 5000.00, '2025-02-1'),
-    (2, 5000.00, '2025-02-1'),
-    (3, 3500.00, '2025-02-1'),
-    (4, 4300.00, '2025-02-1'),
-    (6, 3700.00, '2025-02-1');
+INSERT INTO historico_renda (usuario_id, renda_mensal, data_registro) VALUES
+(1, 5000.00, '2025-02-01'),
+(2, 5000.00, '2025-02-01'),
+(3, 3500.00, '2025-02-01'),
+(4, 4300.00, '2025-02-01'),
+(5, 3700.00, '2025-02-01');
+```
