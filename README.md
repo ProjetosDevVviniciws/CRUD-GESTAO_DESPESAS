@@ -147,7 +147,9 @@ USE gestao_despesas;
 CREATE USER Vinicius@localhost IDENTIFIED BY '@program225X';
 SELECT * FROM mysql.user;
 
-GRANT ALL ON gestao_despesas.* TO Vinicius@localhost;
+GRANT ALL 
+ON gestao_despesas.*
+TO Vinicius@localhost;
 SHOW GRANTS FOR Vinicius@localhost;
 
 CREATE TABLE usuarios (
@@ -213,5 +215,5 @@ INSERT INTO historico_renda (usuario_id, renda_mensal, data_registro) VALUES
 (2, 5000.00, '2025-02-01'),
 (3, 3500.00, '2025-02-01'),
 (4, 4300.00, '2025-02-01'),
-(5, 3700.00, '2025-02-01');
+(6, 3700.00, '2025-02-01');
 ```
