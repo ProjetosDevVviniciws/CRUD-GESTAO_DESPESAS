@@ -1,3 +1,4 @@
+cryptography==44.0.2 # Fornece ferramentas para criptografia, incluindo geração de chaves e certificados.
 cffi==1.17.1 # Interface para chamar funções C a partir do Python, usada em muitas bibliotecas criptográficas.
 contourpy==1.3.1 # Biblioteca para criar contornos em gráficos científicos, usada pelo Matplotlib.
 cycler==0.12.1 # Gerencia ciclos de cores e estilos em gráficos do Matplotlib.
@@ -15,3 +16,4 @@ pyparsing==3.2.1 # Biblioteca para processar e analisar strings baseadas em gram
 python-dateutil==2.9.0.post0 # Facilita o trabalho com datas e fusos horários.
 pytz==2025.1 # Manipulação de fusos horários compatível com a datetime do Python
 SQLAlchemy==2.0.38 # ORM para banco de dados, simplificando consultas SQL no Python.
+

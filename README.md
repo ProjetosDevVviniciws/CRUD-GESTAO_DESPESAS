@@ -51,32 +51,28 @@ algum valor ou categoria.
 * **Deletar Despesas:** Oferece a possibilidade de excluir despesas registradas, mantendo o controle financeiro atualizado e sem erros.
 
 **Menu Exportar para CSV**
-* **Exportar Despesas e Informações Financeiras:** Permite ao usuário exportar seus dados financeiros (despesas e categorias) em formato CSV, com a possibilidade de filtrar as informações por mês. Esse formato pode ser aberto em programas como o Excel, facilitando a visualização e o controle das finanças. A exportação por mês permite ao usuário analisar suas finanças de forma mais detalhada, por período.
+* **Exportar Despesas e Informações Financeiras:** Permite ao usuário exportar seus dados financeiros em formato CSV, com a possibilidade de filtrar as informações por mês. Esse formato pode ser aberto em programas como o Excel, facilitando a visualização e o controle das finanças. 
 
 **Menu Gerar Relatório de Gastos**
-* **Gráfico de Pizza – Gastos por Categoria:** Este gráfico exibe a distribuição percentual dos gastos do usuário por categoria, filtrando os dados conforme o mês selecionado. Ele permite uma visualização rápida de como o dinheiro foi gasto em diferentes áreas durante o mês escolhido.
+* **Gráfico de Pizza – Gastos por Categoria:** Exibe a distribuição percentual dos gastos do usuário por categoria, filtrando os dados conforme o mês selecionado.
 
-* **Gráfico de Barras – Gastos Fixos vs Variáveis:** Compara os gastos fixos (como aluguel, contas de serviços públicos) com os gastos variáveis (como alimentação, entretenimento), filtrados por mês. Esse gráfico ajuda o usuário a identificar onde pode economizar durante o mês analisado.
+* **Gráfico de Barras – Gastos Fixos vs Variáveis:** Compara os gastos fixos com os gastos variáveis, permitindo uma melhor análise financeira mensal.
 
-* **Gráfico de Barras – Gastos Totais vs Renda Mensal:** Este gráfico compara o total de gastos do usuário com sua renda mensal, filtrado pelo mês escolhido. Ele permite uma análise clara de se o usuário está gastando mais do que ganha naquele mês, facilitando a tomada de decisões financeiras mais conscientes.
+* **Gráfico de Barras – Gastos Totais vs Renda Mensal:** Compara o total de gastos do usuário com sua renda mensal no período selecionado. Esse gráfico ajuda a identificar se o usuário ficou no positivo ou no negativo no mês, auxiliando no planejamento financeiro e na tomada de decisões para equilibrar os gastos.
 
 
 ## Tecnologias Utilizadas
 
-**Editor de Código**
-* **Visual Studio Code:** Como editor de código.
+**Editor de Código:** Visual Studio Code
 
-**Banco de Dados**
-* **MySQL:** Banco de dados relacional utilizado para armazenar os dados do projeto.
+**Banco de Dados:** MySQL 
 
-**Framework**
-* **SQLAlchemy:** ORM (Object Relational Mapper) para facilitar a interação com o banco de dados.
+**Framework:** SQLAlchemy (para facilitar a interação com o banco de dados.)
 
-**Linguagem de Programação**
-* **Pyhton:** Linguagem de programação utilizada para o desenvolvimento do projeto.
+**Linguagem de Programação:** Python
 
 
-## Bibliotecas
+## Bibliotecas Principais
 
 **Manipulação de Dados**
 * **Pandas:** Para manipulação e análise de dados.
@@ -87,53 +83,17 @@ algum valor ou categoria.
 * **Matplotlib:** Biblioteca para criação de gráficos e visualizações de dados financeiros.
 
 
-## Dependências Adicionais
-
-* **greenlet:** Suporte para microthreads, utilizado pelo SQLAlchemy.
-
-* **kiwisolver:** Resolves equações matemáticas, utilizado pelo Matplotlib.
-
-* **cffi:** Interface para chamar funções C a partir do Python, usada em bibliotecas criptográficas.
-
-* **contourpy:** Para criar contornos em gráficos científicos, utilizado pelo Matplotlib.
-
-* **cycler:** Gerencia ciclos de cores e estilos em gráficos, utilizado pelo Matplotlib.
-
-* **fonttools:** Manipula fontes, utilizado para renderização de textos em gráficos.
-
-* **pycparser:** Parser para código C, utilizado por bibliotecas como cffi.
-
-* **pyparsing:** Biblioteca para análise e processamento de strings baseadas em gramáticas.
-
-* **python-dateutil:** Facilita o trabalho com datas e fusos horários.
-
-* **pytz:** Manipula fusos horários compatíveis com o datetime do Python.
-
-* **mysql-connector-python:** Alternativa ao SQLAlchemy para conectar Python ao MySQL.
-
-* **PyMySQL:** Outra alternativa para conectar Python ao MySQL.
-
-* **pillow:** Biblioteca para processamento de imagens.
-
-
 ## Diferenciais do Projeto
 
-* **Filtragem de Despesas por Mês:** Tanto na exportação para CSV quanto nos relatórios
-gráficos, os usuários podem filtrar suas despesas por mês, permitindo uma análise financeira
-mais detalhada e organizada.
+* **Filtragem de Despesas por Mês:** Permite uma análise financeira mais detalhada.
 
-* **Análise Visual Intuitiva:** Os gráficos gerados com Matplotlib permitem que os usuários
-visualizem seus gastos de maneira clara e eficiente, ajudando na tomada de decisões financeiras.
+* **Análise Visual Intuitiva:** Os gráficos ajudam na tomada de decisões financeiras.
 
-* **Exportação de Dados em CSV:** Permite que os usuários exportem seus registros financeiros
-e analisem as informações em softwares como Excel, possibilitando um controle financeiro mais
-aprofundado.
+* **Exportação de Dados em CSV:** Facilita o controle financeiro.
 
-* **Organização Modular:** O projeto está bem estruturado, separando funcionalidades em menus
-específicos (Usuários, Categorias, Despesas, Exportação, Relatórios), o que melhora a manutenção
-e escalabilidade do código.
+* **Organização Modular:** Estrutura bem definida para fácil manutenção.
 
-* **Pontencial de Expansão:** A arquitetura do sistema permite futuras melhorias, como:
+* **Potencial de Expansão:** A arquitetura do sistema permite futuras melhorias, como:
 Novas funcionalidades nos menus, como dashboards e notificações financeiras. E Aprimoramento
 da interface, tornando-a mais moderna e responsiva para acesso em diferentes dispositivos.
 
