@@ -177,3 +177,50 @@ INSERT INTO historico_renda (usuario_id, renda_mensal, data_registro) VALUES
 (4, 4300.00, '2025-02-01'),
 (6, 3700.00, '2025-02-01');
 ```
+
+
+## 🛠️ Observações Necessárias para Rodar o App
+
+Para garantir que o projeto rode corretamente em outro computador, é recomendado utilizar um ambiente virtual Python (`venv`) com as dependências do projeto listadas no arquivo `requirements.txt`.
+
+### 1. Criar um ambiente virtual
+
+No terminal, navegue até a pasta do projeto e execute:
+
+```bash
+python -m venv .venv
+```
+
+### 2. Ativar o ambiente virtual
+
+- **Windows**:
+
+```bash
+.venv\Scripts\activate
+```
+
+- **Linux / MacOS**:
+
+```bash
+source .venv/bin/activate
+```
+
+Você saberá que o ambiente virtual foi ativado quando o nome do ambiente aparecer no início da linha do terminal.
+
+### 3. Instalar as dependências
+
+Com o ambiente ativado, instale todas as dependências necessárias com:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Rodar o projeto normalmente
+
+Agora, você pode executar seu aplicativo Python com todas as bibliotecas certas, sem interferência de outras instalações do sistema. Para isso, utilize o comando abaixo no terminal (estando dentro do ambiente virtual e no diretório correto):
+
+```bash
+python app.py
+```
+
+🔁 Substitua app.py pelo nome do arquivo principal do seu projeto, se for diferente.
