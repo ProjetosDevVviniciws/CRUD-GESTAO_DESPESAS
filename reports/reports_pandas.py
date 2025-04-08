@@ -66,11 +66,23 @@ def exportar_para_csv(usuario_id, mes_ano):
                         
         # Ordena por data
         df.sort_values(by='Data', inplace=True)
-            
+        
+        # Extrai a renda mensal (assumindo que é igual em todas as linhas)
+        renda_mensal_valor = df['Renda Mensal'].iloc[0] if 'Renda Mensal' in df.columns else None
+        
+        # Remove a coluna "Renda Mensal" do DataFrame
+        if 'Renda Mensal' in df.columns:
+            df.drop(columns=['Renda Mensal'], inplace=True)
+        
         data_atual = datetime.now().strftime("%Y-%m-%d")
         nome_arquivo = f"relatorio_despesas_usuario_{usuario_id}_{mes_ano}_{data_atual}.csv" 
             
-        df.to_csv(nome_arquivo, sep=';', index=False, encoding="utf-8-sig", decimal=',') 
+        # Abre o arquivo e escreve a linha de renda mensal antes do DataFrame
+        with open(nome_arquivo, mode='w', encoding='utf-8-sig') as f:
+            if renda_mensal_valor is not None:
+                f.write(f"Renda Mensal: {renda_mensal_valor}\n\n")
+            df.to_csv(f, sep=';', index=False, decimal=',')
+            
         print(f"Relatório exportado com sucesso para {nome_arquivo}")
              
     except Exception:
