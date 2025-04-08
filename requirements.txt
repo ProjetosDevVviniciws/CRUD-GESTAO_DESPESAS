@@ -1,19 +1,21 @@
-cryptography==44.0.2 # Fornece ferramentas para criptografia, incluindo geração de chaves e certificados.
-cffi==1.17.1 # Interface para chamar funções C a partir do Python, usada em muitas bibliotecas criptográficas.
 contourpy==1.3.1 # Biblioteca para criar contornos em gráficos científicos, usada pelo Matplotlib.
 cycler==0.12.1 # Gerencia ciclos de cores e estilos em gráficos do Matplotlib.
 fonttools==4.55.8 # Trabalha com fontes, útil para renderização de textos em gráficos.
 greenlet==3.1.1 # Fornece suporte a microthreads, usado pelo SQLAlchemy para operações assíncronas.
 kiwisolver==1.4.8 # Resolve equações matemáticas, utilizado para layout no Matplotlib.
-matplotlib==3.10.0 # Criação de gráficos e visualizações de dados.
+matplotlib==3.10.1 # Criação de gráficos e visualizações de dados.
 mysql-connector-python==9.2.0 # Conecta aplicações Python ao MySQL.
-numpy==2.2.2 # Biblioteca para cálculos numéricos eficientes, usada em manipulação de arrays e matrizes.
+numpy==2.2.4 # Biblioteca para cálculos numéricos eficientes, usada em manipulação de arrays e matrizes.
+packaging==24.2 # Lida com metadados de pacotes Python.
 pandas==2.2.3 # Manipulação e análise de dados, usado para tabelas e relatórios.
 pillow==11.1.0 # Biblioteca para processamento de imagens.
-pycparser==2.22 # Parser para código C, usado por bibliotecas como cffi.
 PyMySQL==1.1.1 # Alternativa ao mysql-connector-python, também usada para conexão com MySQL.
 pyparsing==3.2.1 # Biblioteca para processar e analisar strings baseadas em gramáticas.
 python-dateutil==2.9.0.post0 # Facilita o trabalho com datas e fusos horários.
 pytz==2025.1 # Manipulação de fusos horários compatível com a datetime do Python
+setuptools==78.1.0 # Ferramenta essencial para empacotar e instalar projetos Python.
+six==1.17.0 # Compatibilidade entre Python 2 e 3 (quase obsoleto nas versões modernas).
 SQLAlchemy==2.0.38 # ORM para banco de dados, simplificando consultas SQL no Python.
-
+typing_extensions==4.13.1 # Fornece tipos avançados para anotações no código.
+tzdata==2025.1 # Banco de dados atualizado de fusos horários.
+wheel==0.45.1 # Suporte à construção de pacotes .whl (Wheel), um formato moderno de distribuição de pacotes Python.
