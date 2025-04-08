@@ -1,0 +1,8 @@
+﻿Renda Mensal: 4700.0
+
+Categoria;Valor;Data;Descrição;Tipo
+Combustível;200,0;2025-03-11;Combustível do Mês;Variável
+Plano de Saúde;1150,0;2025-03-11;Consulta com Médico;Fixa
+Plano de Celular;65,0;2025-03-11;Plano de Celular;Fixa
+Internet;120,0;2025-03-11;Conta de Internet;Fixa
+Alimentação;270,0;2025-03-11;Alimentos para Dieta;Variável
