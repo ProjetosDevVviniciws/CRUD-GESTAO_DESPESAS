@@ -1,0 +1,7 @@
+# Ignorar arquivos compilados do Python
+__pycache__/
+*.pyc
+
+# Outras coisas que talvez queira ignorar
+.env
+*.log
