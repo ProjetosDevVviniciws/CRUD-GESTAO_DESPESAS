@@ -224,3 +224,13 @@ python app.py
 ```
 
 🔁 Substitua app.py pelo nome do arquivo principal do seu projeto, se for diferente.
+
+### 5. Sair do ambiente virtual (opcional)
+
+Quando terminar de usar o projeto, você pode sair do ambiente virtual com:
+
+```bash
+deactivate
+```
+
+Isso retorna o terminal ao modo normal. Essa etapa é opcional, mas recomendada especialmente se você for trabalhar com outros projetos Python que usam ambientes diferentes.
