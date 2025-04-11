@@ -8,9 +8,9 @@ O projeto DinheiroSábio, tem como objetivo ajudar os usuários a gerenciar suas
 
 ✅ Gráfico de Barras – Compara despesas fixas e variáveis.
 
-✅ Gráfico de Barras – Analisa os gastos totais em relação à renda mensal.
+✅ Gráfico de Barras – Compara os gastos totais com a renda mensal, indicando se o usuário está no positivo ou negativo.
 
-Além disso, o usuário pode exportar suas despesas e informações financeiras em formato CSV, permitindo a visualização dos dados em planilhas como o Excel.
+Além disso, o usuário pode exportar suas despesas e informações financeiras em formato XLSX, permitindo a visualização dos dados em planilhas como o Excel.
 
 
 ## Funcionalidades
@@ -50,8 +50,8 @@ algum valor ou categoria.
 
 * **Deletar Despesas:** Oferece a possibilidade de excluir despesas registradas, mantendo o controle financeiro atualizado e sem erros.
 
-**Menu Exportar para CSV**
-* **Exportar Despesas e Informações Financeiras:** Permite ao usuário exportar seus dados financeiros em formato CSV, com a possibilidade de filtrar as informações por mês. Esse formato pode ser aberto em programas como o Excel, facilitando a visualização e o controle das finanças. 
+**Menu Exportar para XLSX**
+* **Exportar Despesas e Informações Financeiras:** Permite ao usuário exportar seus dados financeiros em formato XLSX, com a possibilidade de filtrar as informações por mês. Esse formato pode ser aberto em programas como o Excel, facilitando a visualização e o controle das finanças. 
 
 **Menu Gerar Relatório de Gastos**
 * **Gráfico de Pizza – Gastos por Categoria:** Exibe a distribuição percentual dos gastos do usuário por categoria, filtrando os dados conforme o mês selecionado.
@@ -77,7 +77,7 @@ algum valor ou categoria.
 **Manipulação de Dados**
 * **Pandas:** Para manipulação e análise de dados.
 
-* **NumPy:** Biblioteca para cálculos numéricos e operações com arrays e matrizes.
+* **NumPy:** Biblioteca base para cálculos numéricos, utilizada internamente pelo Pandas.
 
 **Visualização de Dados**
 * **Matplotlib:** Biblioteca para criação de gráficos e visualizações de dados financeiros.
@@ -89,7 +89,7 @@ algum valor ou categoria.
 
 * **Análise Visual Intuitiva:** Os gráficos ajudam na tomada de decisões financeiras.
 
-* **Exportação de Dados em CSV:** Facilita o controle financeiro.
+* **Exportação de Dados em XLSX:** Facilita o controle financeiro.
 
 * **Organização Modular:** Estrutura bem definida para fácil manutenção.
 
