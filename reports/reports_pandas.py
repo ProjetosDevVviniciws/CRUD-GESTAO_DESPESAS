@@ -1,4 +1,4 @@
-# Exportação de dados
+# Exporta o relatorio de despesas para XLSX formatado com Excel
 
 import pandas as pd # Importa a biblioteca pandas para manipulação de dados
 from sqlalchemy import create_engine
@@ -7,8 +7,11 @@ from database.db_config import get_db_connection # Importa a função para obter
 from datetime import datetime # Importa a classe datetime para manipulação de data e hora
 import traceback # Para exibir erros detalhados
 import sys # Para encerrar o programa corretamente
+from openpyxl import Workbook
+from openpyxl.styles import Font, Alignment, PatternFill, Border, Side, NamedStyle
+from openpyxl.utils.dataframe import dataframe_to_rows
 
-def exportar_para_csv(usuario_id, mes_ano):
+def exportar_para_excel(usuario_id, mes_ano):
     """
     Exporta as despesas de um usuário específico
     para CSV, filtrando por mês.
@@ -75,14 +78,82 @@ def exportar_para_csv(usuario_id, mes_ano):
             df.drop(columns=['Renda Mensal'], inplace=True)
         
         data_atual = datetime.now().strftime("%Y-%m-%d")
-        nome_arquivo = f"relatorio_despesas_usuario_{usuario_id}_{mes_ano}_{data_atual}.csv" 
+        nome_arquivo = f"relatorio_despesas_usuario_{usuario_id}_{mes_ano}_{data_atual}.xlsx" 
+        
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Relatório de Despesas"
+        
+        # Formatação
+        bold_font = Font(bold=True)
+        center_align = Alignment(horizontal="center")
+        money_format = '#,##0.00\ [$R$-416]'
+        border = Border(left=Side(style='thin'), right=Side(style='thin'), top=Side(style='thin'), bottom=Side(style='thin'))
+        fill = PatternFill("solid", fgColor="DDDDDD")
+        
+        # Adiciona renda mensal
+        if renda_mensal_valor is not None:
+            ws.append(["Renda Mensal"]) # Título na primeira linha
+            ws.append([renda_mensal_valor]) # Valor na linha de baixo
             
-        # Abre o arquivo e escreve a linha de renda mensal antes do DataFrame
-        with open(nome_arquivo, mode='w', encoding='utf-8-sig') as f:
-            if renda_mensal_valor is not None:
-                f.write(f"Renda Mensal: {renda_mensal_valor}\n\n")
-            df.to_csv(f, sep=';', index=False, decimal=',')
+            ws["A1"].font = bold_font
+            ws["A1"].alignment = center_align
+            ws["A1"].border = border
+            ws["A1"].fill = fill
             
+            renda_cell = ws["A2"]
+            renda_cell.number_format = money_format
+            renda_cell.font = Font(bold=True)
+            renda_cell.alignment = center_align
+            renda_cell.border = border
+            
+            ws.append([]) # Linha em branco
+
+        # Adiciona os dados do DataFrame
+        for r in dataframe_to_rows(df, index=False, header=True):
+            ws.append(r)
+            
+        # Determina em que linha começam os dados
+        linha_inicio_dados = 4 if renda_mensal_valor is not None else 2
+        
+        # Cabeçalho formatado
+        for col in ws.iter_cols(min_row=linha_inicio_dados, max_row=linha_inicio_dados, min_col=1, max_col=ws.max_column):
+            for cell in col:
+                cell.font = bold_font
+                cell.fill = fill
+                cell.border = border
+                cell.alignment = center_align
+          
+        # Aplica formato de moeda na coluna "Valor"
+        for row in ws.iter_rows(min_row=linha_inicio_dados + 1, min_col=1, max_row=ws.max_row, max_col=ws.max_column):
+            for cell in row:
+                # Formata valor
+                cell.border = border
+                if cell.column_letter == 'B' and isinstance(cell.value, (int, float)):
+                    cell.number_format = money_format
+                    cell.alignment = center_align
+                    
+                # Formata data (coluna C)
+                elif cell.column_letter == 'C' and isinstance(cell.value, datetime):
+                    cell.number_format = 'DD/MM/YYYY'
+                    cell.alignment = center_align
+                
+                elif cell.column_letter in ['A', 'D', 'E']:
+                    cell.alignment = center_align
+
+        # Ajusta largura das colunas automaticamente
+        for col in ws.columns:
+            max_length = 0
+            col_letter = col[0].column_letter
+            for cell in col:
+                if cell.value:
+                    max_length = max(max_length, len(str(cell.value)))
+            ws.column_dimensions[col_letter].width = max_length + 2
+        
+        # Força largura maior para a coluna "Valor" (coluna B)
+        ws.column_dimensions["B"].width = 15
+        
+        wb.save(nome_arquivo)   
         print(f"Relatório exportado com sucesso para {nome_arquivo}")
              
     except Exception:
@@ -93,7 +164,7 @@ if __name__ == "__main__": # Verifica se o script está sendo executado diretame
     try:
         usuario_id = int(input("Digite o ID do usuário:"))
         mes_ano = input("Digite o mês no formato YYYY-MM (exemplo: 2025-03): ")
-        exportar_para_csv(usuario_id, mes_ano)
+        exportar_para_excel(usuario_id, mes_ano)
     except ValueError:
         print("ID do usuário inválido. Certifique-se de inserir um número inteiro.")
         sys.exit(1)
