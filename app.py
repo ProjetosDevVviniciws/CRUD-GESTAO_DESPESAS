@@ -15,7 +15,7 @@ def menu_principal():
         print("1 - Gerenciar Usuários")
         print("2 - Gerenciar Categorias")
         print("3 - Gerenciar Despesas")
-        print("4 - Exportar para CSV")
+        print("4 - Exportar para XLSX")
         print("5 - Gerar Relatório de Gastos")
         print("0 - Sair")
         
