@@ -1,4 +1,4 @@
-## Projeto DinheiroSábio - Documentação Oficial
+# Projeto DinheiroSábio - Documentação Oficial
 
 **Introdução**
 
