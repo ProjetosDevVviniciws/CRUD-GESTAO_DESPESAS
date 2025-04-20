@@ -1,6 +1,6 @@
 # Projeto DinheiroSábio - Documentação Oficial
 
-**Introdução**
+## Introdução
 
 O projeto DinheiroSábio, tem como objetivo ajudar os usuários a gerenciar suas despesas de forma simples e eficiente. Com ele, é possível visualizar seus gastos por meio de gráficos interativos, incluindo:
 
